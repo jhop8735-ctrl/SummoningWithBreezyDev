@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summoning With Breezy — Devlog</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:     #060a14;
+    --panel:  #0b1120;
+    --border: #1a2a4a;
+    --gold:   #f0a030;
+    --gold2:  #ffd080;
+    --blue:   #3a8fff;
+    --blue2:  #7ab8ff;
+    --green:  #30d080;
+    --red:    #ff4a4a;
+    --muted:  #4a6080;
+    --text:   #c8d8f0;
+    --dim:    #6080a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 52px; }
+  .header::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent);
+    margin-top: 24px;
+  }
+
+  .game-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(22px, 5vw, 38px);
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(240,160,48,0.5), 0 0 60px rgba(240,160,48,0.2);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: flicker 8s infinite;
+  }
+
+  @keyframes flicker {
+    0%,96%,100% { opacity:1; } 97% { opacity:0.85; } 98% { opacity:1; } 99% { opacity:0.9; }
+  }
+
+  .sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  .date-badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 16px;
+    border: 1px solid var(--blue);
+    color: var(--blue2);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    background: rgba(58,143,255,0.06);
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 52px;
+  }
+
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 14px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 40px; height: 40px;
+    background: radial-gradient(circle at top right, rgba(240,160,48,0.08), transparent);
+  }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold2);
+    margin-top: 2px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 44px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .section-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* Entries */
+  .entry {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    transition: border-color 0.2s;
+    animation: slideIn 0.35s ease both;
+  }
+
+  .entry:hover { border-left-color: var(--gold); }
+
+  @keyframes slideIn {
+    from { opacity:0; transform: translateX(-10px); }
+    to   { opacity:1; transform: translateX(0); }
+  }
+
+  .entry.fix     { border-left-color: var(--green); }
+  .entry.feature { border-left-color: var(--gold); }
+  .entry.improve { border-left-color: var(--blue); }
+
+  .entry-tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    border: 1px solid currentColor;
+  }
+
+  .entry.fix     .entry-tag { color: var(--green); background: rgba(48,208,128,0.07); }
+  .entry.feature .entry-tag { color: var(--gold);  background: rgba(240,160,48,0.07); }
+  .entry.improve .entry-tag { color: var(--blue2); background: rgba(58,143,255,0.07); }
+
+  .entry-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .entry-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.55;
+  }
+
+  .entry-desc code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--gold2);
+    background: rgba(240,160,48,0.08);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 60px;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .pulse {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(48,208,128,0.4); }
+    50%      { opacity:0.7; box-shadow: 0 0 0 5px rgba(48,208,128,0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="game-title">Summoning With Breezy</div>
+    <div class="sub">Development Log</div>
+    <div class="date-badge">Session — February 24, 2026</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-label">Bugs Fixed</div>
+      <div class="stat-value">7</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Features Added</div>
+      <div class="stat-value">6</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Files Changed</div>
+      <div class="stat-value">3</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Status</div>
+      <div class="stat-value" style="font-size:14px; color:var(--green); margin-top:6px;"><span class="pulse"></span>RUNNING</div>
+    </div>
+  </div>
+
+  <!-- BUGS FIXED -->
+  <div class="section">
+    <div class="section-header"><h2>Bugs Fixed</h2></div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Lodestone teleports firing during walks</div>
+      <div class="entry-desc"><code>NavPath.resolve()</code> was routing through lodestones on the Taverley bank–obelisk path. Fixed by passing <code>Movement.DISABLE_TELEPORTS</code> flag to every <code>NavPath.resolve()</code> call.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot walking away from bank on startup</div>
+      <div class="entry-desc">On start, the bot would fire the pathfinder from inside the bank and walk outside before returning. Root cause was incorrect Taverley bank coordinates — the target was 11 tiles from the actual booth. Corrected <code>bankX</code> from <code>2886</code> to <code>2875</code>. Also fixed bank scene object wait loop which was calling the pathfinder while the player was already standing at the booth.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Scroll counter always showing zero</div>
+      <div class="entry-desc">RS3 scroll names include the ability in parentheses (e.g. <code>Bull Ant scroll (Unburden)</code>), so the exact <code>^Bull ant scroll$</code> pattern never matched. Removed the trailing <code>$</code> anchor from <code>scrollPattern</code> and switched <code>countBackpack</code> from <code>matches()</code> to <code>find()</code>.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Run energy thresholds never triggering</div>
+      <div class="entry-desc">Varp 463 returns 0–10000 but thresholds were being compared as 0–100 percentages. Rest would never fire since raw energy (e.g. 7500) was always above the threshold (35). Added <code>/ 100</code> division in <code>getRunEnergy()</code>. Also corrected the <code>MiniMenu.interact</code> call to match the logged <code>DoAction(COMPONENT, 1, -1, 96010254)</code> signature exactly.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">All PouchType shard costs and tertiary ingredients wrong</div>
+      <div class="entry-desc">Nearly every entry in the enum had incorrect shard counts and many had wrong tertiary items — the original data appeared to use XP values instead of shard costs. Rebuilt the entire enum from RS3 wiki data. Also fixed charms on Giant ent (Gold), Iron titan (Crimson), and Steel titan (Crimson).</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot not stopping when out of charms or tertiary items</div>
+      <div class="entry-desc">When a charm or tertiary ran out mid-session, the bot would spam "Missing" logs and walk to the bank repeatedly. Now detects missing charm or tertiary immediately in both <code>handleInfusing</code> and <code>handleBanking</code> and transitions directly to <code>OUT_OF_SUPPLIES</code>.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Long delays after preset load and scroll conversion</div>
+      <div class="entry-desc">Replaced fixed <code>2500–3500ms</code> post-preset wait with <code>delayUntil(supplies appear)</code>. Removed dead <code>1500–3000ms</code> wait after scroll conversion completes. Replaced fixed obelisk-click delay with <code>delayUntil(interface opens)</code>.</div>
+    </div>
+
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="section-header"><h2>Features &amp; Improvements</h2></div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Scroll conversion support</div>
+      <div class="entry-desc">Optional mode to convert all pouches to scrolls after each infuse batch. Tracks scrolls made and scrolls/hr in the Statistics panel. Counter correctly handles stackable scrolls and variable quantities per pouch type.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Smart startup — skip unnecessary walks</div>
+      <div class="entry-desc">On start, the bot checks where the player is standing. Already at the obelisk with supplies → infuse immediately. Already at the bank → load preset immediately. Only walks if genuinely away from both locations.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">No-progress watchdog (4 minutes)</div>
+      <div class="entry-desc">If no pouches or scrolls are produced for 4 minutes while not banking or walking, the bot triggers <code>OUT_OF_SUPPLIES</code>. Prevents silent hangs.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Persistent settings</div>
+      <div class="entry-desc">Selected pouch, location, logout on empty, and convert to scrolls are saved on change and restored on script load via <code>ScriptConfig</code>.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Human-like movement &amp; timing</div>
+      <div class="entry-desc">Per-session <code>reactionOffset</code> (50–250ms) varies base click speed between sessions. Per-trip <code>tripOffsetX/Y</code> shifts walk destinations slightly each trip. <code>bumpActionCount()</code> inserts 1.5–6s attention-drift pauses every 8–20 actions. <code>waitForMovement()</code> waits for <code>player.isMoving()</code> rather than fixed timers.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Run / rest management</div>
+      <div class="entry-desc">Rests randomly between 30–50% energy, threshold re-rolled each time. Resumes only at 100% with a 1.5–4s human settle delay before moving. Uses the confirmed <code>DoAction</code> signature for the run orb.</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span class="pulse"></span>
+    SUMMONING WITH BREEZY &nbsp;·&nbsp; DEV SESSION 2026-02-24 &nbsp;·&nbsp; BUILD IN PROGRESS
+  </div>
+
+</div>
+</body>
+</html>
