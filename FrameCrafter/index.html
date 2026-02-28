@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frame Maker — Devlog</title>
+<title>Fort Forinthry Crafter — Devlog</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -304,27 +304,27 @@
 <div class="container">
 
   <div class="header">
-    <div class="game-title">Breezy's Frame Maker</div>
+    <div class="game-title">Fort Forinthry Crafter</div>
     <div class="sub">BotWithUs Script — Development Log</div>
-    <div class="date-badge">Session — February 27, 2026 &nbsp;·&nbsp; Updated</div>
+    <div class="date-badge">Session — February 27–28, 2026 &nbsp;·&nbsp; Updated</div>
   </div>
 
   <div class="stats-bar">
     <div class="stat">
       <div class="stat-label">Features</div>
-      <div class="stat-value">6</div>
+      <div class="stat-value">11</div>
     </div>
     <div class="stat">
       <div class="stat-label">Fixes</div>
-      <div class="stat-value" style="color: var(--green);">4</div>
+      <div class="stat-value" style="color: var(--green);">7</div>
     </div>
     <div class="stat">
       <div class="stat-label">Improvements</div>
-      <div class="stat-value">7</div>
+      <div class="stat-value">12</div>
     </div>
     <div class="stat">
       <div class="stat-label">Known Issues</div>
-      <div class="stat-value" style="color: var(--red);">2</div>
+      <div class="stat-value" style="color: var(--red);">1</div>
     </div>
     <div class="stat">
       <div class="stat-label">API Version</div>
@@ -420,6 +420,62 @@
         Saved automatically when the <code>DONE</code> state is reached and again in
         <code>onDeactivation()</code> as a safety fallback.
       </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Rename — Breezy's Frame Maker → Fort Forinthry Crafter</div>
+      <div class="entry-desc">
+        Full rename across all three source files (<code>FortForinthryCrafter.java</code>,
+        <code>FortForinthryCrafterGraphicsContext.java</code>, <code>WoodType.java</code>).
+        All console prefixes, log file names, class names, and UI labels updated to match.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Session Fatigue — Break Frequency Increases Over Time</div>
+      <div class="entry-desc">
+        Break intervals now shrink as the session ages. A fatigue factor decays from
+        <code>1.0 → 0.5</code> over the first 3 hours — a player who breaks every 15 min at
+        start will break every ~7.5 min after 3 hours. Floored at 5 minutes. The
+        <code>[Break]</code> log line now prints the current fatigue factor so you can see
+        it working. Break duration changed to <strong>4–6 min</strong> (avg ~5 min) with a 4-minute floor.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Post-Login Warm-Up — First Batch Extra-Long Delays</div>
+      <div class="entry-desc">
+        The very first batch after clicking Start gets 4–9 s of warm-up settle time instead of
+        the normal 2–5 s, with a 40% chance of a second 2–5 s "distraction" pause — simulating
+        a player reading chat or tabbing back in. <code>firstBatch</code> is reset each Start press
+        and cleared after the first successful batch completes.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Camera Zoom — Insert / Delete Key Taps</div>
+      <div class="entry-desc">
+        A new <code>tickZoom()</code> fires every 15–40 min and taps <code>Insert</code> (zoom in)
+        or <code>Delete</code> (zoom out) 1–4 times via <code>KeyboardInput.pressKey()</code> —
+        the BWU API's own input layer, no Robot required. Scheduled and reset on Start alongside
+        camera rotation.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">GE Price Tracking — Live Wiki Fetch (Logs → Frames Profit)</div>
+      <div class="entry-desc">
+        On script load, a daemon thread fetches the RS Wiki's live GE price JSON
+        (<code>Module:GEPrices/data.json</code>). After each frame batch, profit is calculated as
+        <code>(framePrice − logPrice) × framesThisBatch</code> and accumulated into
+        <code>totalProfitGp</code>. The Statistics panel shows log price, frame price, per-item
+        margin, total profit, and profit/hr. Session log also includes the profit section.
+        Uses Gson already on the classpath via the BWU API dependency — no extra libs needed.
+      </div>
     </div>
 
   </div>
@@ -492,6 +548,43 @@
   <!--  TODAY'S LOG — IMPROVEMENTS                                             -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <div class="section">
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Compile Error — Missing Backpack Import</div>
+      <div class="entry-desc">
+        <code>countBackpack()</code> called <code>Backpack.container()</code> but
+        <code>net.botwithus.rs3.game.inventories.Backpack</code> was never imported.
+        The compiler reported <em>"cannot find symbol variable Backpack"</em> at line 794.
+        Added the explicit import alongside <code>Bank</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Compile Error — Gson Not Explicitly Declared as Dependency</div>
+      <div class="entry-desc">
+        <code>loadGEPrices()</code> used <code>com.google.gson.Gson</code> and
+        <code>com.google.gson.JsonObject</code> which were only available transitively through
+        <code>botwithus-api</code>. Transitive deps are not guaranteed across API updates.
+        Added <code>com.google.code.gson:gson:2.10.1</code> explicitly to both
+        <code>implementation</code> and <code>includeInJar</code> in <code>build.gradle.kts</code>,
+        and converted the fully-qualified inline references to top-level imports.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Compile Error — Class Name / File Name Mismatch</div>
+      <div class="entry-desc">
+        The class was renamed to <code>FortForinthryCrafter</code> but the physical
+        <code>.java</code> file on disk was still named <code>BreezysFrameMaker.java</code>.
+        Java requires the public class name to match the filename exactly. The output file is
+        now <code>FortForinthryCrafter.java</code> and <code>build.gradle.kts</code> updated
+        to produce <code>FortForinthryCrafter.jar</code>.
+      </div>
+    </div>
+
     <div class="section-header"><h2>Today's Log — Improvements</h2></div>
 
     <div class="entry improve">
@@ -585,6 +678,73 @@
   <!--  KNOWN ISSUES                                                           -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <div class="section">
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">humanDelay — Replaced Double-Roll Average with True Wide-Spread Roll</div>
+      <div class="entry-desc">
+        The previous <code>humanDelay()</code> double-rolled and averaged: <code>(a + b) / 2</code>.
+        This creates a <strong>bell curve clustered around the midpoint</strong> — a call like
+        <code>humanDelay(40, 50)</code> almost always returns ~45 ms, making patterns detectable.
+        Replaced with a single <code>RandomGenerator.nextInt(0, range)</code> so every value
+        in the range is equally likely. Added a new <code>humanDelayWide()</code> that has a
+        <strong>5% chance of a 2–4× fat-tail pause</strong> (simulating a player glancing away),
+        used for all inter-action gaps. <code>driftDelay()</code> now delegates to
+        <code>humanDelayWide</code> for maximum spread.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Break Length — Wide Single Roll, Occasional Long Breaks</div>
+      <div class="entry-desc">
+        Break duration was previously computed as <code>(a + b) / 2</code> of two
+        <code>humanDelay(4min, 6min)</code> calls — another bell curve stuck near 5 minutes.
+        Now uses a single <code>humanDelayWide(4min, 7min)</code> call. The 5% fat-tail chance
+        means ~1-in-20 breaks stretches to 7–28 minutes, simulating a player genuinely stepping
+        away from the desk. The other 95% span the full 4–7 minute range uniformly.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Break Interval Scheduling — Wide Roll Replaces Double-Roll Average</div>
+      <div class="entry-desc">
+        <code>scheduleNextBreak()</code> was also using <code>(a + b) / 2</code>, causing break
+        intervals to cluster near the midpoint of the 10–20 minute window. Switched to a single
+        <code>humanDelayWide(baseMin, baseMax)</code> so intervals span the full range. The fat-tail
+        also produces occasional very long play segments (up to ~80 min) before a break — realistic
+        for a focused player.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Break Idle Poll — Wide Random Dwell Instead of Narrow 4–7 s</div>
+      <div class="entry-desc">
+        While on break, the script previously polled every <code>humanDelay(4000, 7000)</code> ms —
+        a roughly uniform 4–7 s interval that could be detected as a heartbeat. Changed to
+        <code>humanDelayWide(3000, 12000)</code> so idle polls range from 3 s to 12 s, with the
+        fat-tail occasionally producing 12–48 s silences. This more closely resembles a player
+        who is genuinely not watching the screen.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Tab Check — Option-Based Lookup Replaces Hardcoded Component Indices</div>
+      <div class="entry-desc">
+        The gear tab check previously used <code>ComponentQuery(1477).componentIndex(117/112/106/101/325/320)</code>
+        — hardcoded slot indices that break silently if the player has rearranged or hidden toolbar
+        tabs. Replaced with <code>ComponentQuery(TAB_INTERFACE).option("Equipment").hidden(false)</code>
+        (and similarly for "Skills" / "Backpack"). The <code>hidden(false)</code> filter means
+        any missing tab is skipped silently rather than causing a null-drag. Both
+        <code>tickGearCheck()</code> and <code>doIdleTabFlick()</code> updated.
+        Skills hover now uses <code>option("Construction").hidden(false)</code> on the skills panel
+        instead of a computed component index.
+      </div>
+    </div>
+
     <div class="section-header"><h2>Known Issues / To Fix</h2></div>
 
     <div class="known">
@@ -617,7 +777,7 @@
 
   <div class="footer">
     <span class="pulse"></span>
-    BREEZY'S FRAME MAKER &nbsp;·&nbsp; DEV SESSION 2026-02-27 &nbsp;·&nbsp; UPDATED &nbsp;·&nbsp; BOTWITHUS API 1.0.8
+    FORT FORINTHRY CRAFTER &nbsp;·&nbsp; DEV SESSION 2026-02-27/28 &nbsp;·&nbsp; UPDATED &nbsp;·&nbsp; BOTWITHUS API 1.0.8
   </div>
 
 </div>
