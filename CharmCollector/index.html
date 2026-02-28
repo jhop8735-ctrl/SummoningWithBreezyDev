@@ -306,21 +306,21 @@
   <div class="header">
     <div class="game-title">Charm Collector</div>
     <div class="sub">BotWithUs Script — Development Log</div>
-    <div class="date-badge">Session — February 25, 2026 &nbsp;·&nbsp; Updated</div>
+    <div class="date-badge">Session 1 — Feb 25, 2026 &nbsp;·&nbsp; Session 2 — Feb 27, 2026</div>
   </div>
 
   <div class="stats-bar">
     <div class="stat">
       <div class="stat-label">Features Added</div>
-      <div class="stat-value">12</div>
+      <div class="stat-value">19</div>
     </div>
     <div class="stat">
       <div class="stat-label">Improvements</div>
-      <div class="stat-value">7</div>
+      <div class="stat-value">9</div>
     </div>
     <div class="stat">
-      <div class="stat-label">Known Bugs</div>
-      <div class="stat-value" style="color: var(--red);">2</div>
+      <div class="stat-label">Bugs Fixed</div>
+      <div class="stat-value" style="color: var(--green);">8</div>
     </div>
     <div class="stat">
       <div class="stat-label">API Version</div>
@@ -647,9 +647,214 @@
   </div>
 
 
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  SESSION 2 — FEB 27 2026                                               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header"><h2>Session 2 — Feb 27, 2026</h2></div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Banking System — Full Taverley Route</div>
+      <div class="entry-desc">
+        Complete bank-and-return loop for Hellhounds (Taverley Dungeon).
+        Triggered when food runs out and <code>useBanking</code> is ON.
+        <strong>Out:</strong> climb ladder (OBJECT1 <code>74866</code> at <code>2842,9824</code>) →
+        NavPath to Taverley bank surface → <code>Bank.depositAll()</code> →
+        click booth OBJECT4 <code>66666</code> (Load Last Preset) → wait for bank open → food check.
+        <strong>In:</strong> NavPath to dungeon entrance → click entrance → wait for
+        <code>Y ≥ 9700</code> → manual door sequence (door 1 → 2 → 3) →
+        NavPath to <code>bankReturnCoord</code>.
+        If food missing after preset — emergency logout.
+        <code>isBanking</code> flag in <code>try/finally</code> always resets.
+        UI shows green <em>"Banking in progress…"</em> / <em>"Returning to dungeon…"</em> status.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Shortcuts Toggle</div>
+      <div class="entry-desc">
+        <code>useShortcuts</code> checkbox (default OFF). When OFF the return route manually clicks
+        each dungeon door in sequence. When ON the pathfinder handles the entire underground route
+        using agility shortcuts automatically. UI checkbox added in the right column below Banking.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Startup Dungeon Entry — Banking Mode</div>
+      <div class="entry-desc">
+        When Banking is ON and START is pressed, <code>needsInitialDungeonPath</code> is set.
+        The very first <code>onLoop</code> tick detects this flag and runs <code>returnToDungeon()</code>
+        before any AFK logic fires — walking the player from the bank into the dungeon to the
+        combat AFK spot. Without this the script would start in AFK mode while standing at the bank.
+        Flag is cleared after the walk completes.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Kickstart Combat on Arrival</div>
+      <div class="entry-desc">
+        After arriving at the combat AFK tile (initial startup or banking return),
+        <code>kickstartCombat()</code> finds the nearest Hellhound via
+        <code>NpcQuery.newQuery().name("Hellhound")</code> and attacks it immediately.
+        Primary path: <code>npc.interact("Attack")</code>.
+        Fallback: <code>MiniMenu.interact(NPCAction.NPC1, npcIndex, 0, 0)</code>
+        matching the confirmed packet <code>DoAction(N/A, 16909, 0, 0)</code>.
+        Retries up to 5× with 0.8–1.4s gaps to handle scene still loading after a map transition.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Auto-Retaliate Toggle on Aggro Reset</div>
+      <div class="entry-desc">
+        Before walking to the aggro reset coordinate, auto-retaliate is disabled via
+        <code>DoAction(COMPONENT, 1, -1, 93716537)</code> (same packet toggles on and off).
+        A <code>retaliateDisabled</code> flag and <code>try/finally</code> guarantee re-enable
+        fires regardless of whether the walk succeeds or throws. Extra server-tick delay after
+        re-enable to confirm registration.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Emergency Logout — No Food (Banking OFF)</div>
+      <div class="entry-desc">
+        When food runs out and Banking is OFF and <code>useLogoutOnFood</code> is ON:
+        sets <code>running = false</code> → climbs ladder (OBJECT1 <code>74866</code>) →
+        waits for <code>Y &lt; 9700</code> surface transition →
+        opens logout panel (<code>COMPONENT 1 1 96796771</code>) →
+        clicks Exit to Lobby (<code>COMPONENT 1 -1 93913157</code>).
+        Logout clicks fire even if ladder click fails.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Potion Suppression During Return Walk</div>
+      <div class="entry-desc">
+        <code>returningFromBank</code> flag (set during all banking return walks) causes both
+        <code>handleCharmPotion()</code> and <code>handleOverload()</code> to return immediately.
+        Prevents potions being drunk mid-walk through the dungeon before reaching the combat spot.
+        Both potion active flags are also reset to <code>false</code> after arrival so they
+        re-drink on the very next loop tick.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Gear Tab Idle Check</div>
+      <div class="entry-desc">
+        Every 10–15 min: drags Equipment tab open → dwells → drags Skills tab →
+        hovers the combat skill with the most XP gained this session →
+        drags Backpack tab back. Uses <code>Interfaces.dragComponents()</code> on interface
+        <code>1477</code> (RS3 customisable toolbar). Confirmed drag slots:
+        Equipment <code>117→112</code>, Skills <code>325→320</code>, Backpack <code>106→101</code>.
+        Skill component index formula: <code>(Skills.getId() × 2) + 1</code> in interface <code>1221</code>.
+        Falls back to Strength if no XP gained yet.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Camera Rotation — AWT Robot</div>
+      <div class="entry-desc">
+        Rotates the RS3 camera 45–90° every 2–5 minutes by holding an arrow key via
+        <code>java.awt.Robot</code>. Direction alternates left/right with a 25% chance
+        of repeating the same side to avoid a mechanical L-R-L-R pattern.
+        Hold duration maps to rotation angle: 500ms ≈ 45°, 1000ms ≈ 90°.
+        Key is always released in a <code>try/catch(InterruptedException)</code> block.
+      </div>
+    </div>
+
+    <!-- Session 2 Fixes -->
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Banking Loop — Deposit Before Preset Load</div>
+      <div class="entry-desc">
+        After the bank opened, the preset was applied to a full backpack — leftover combat items
+        occupied slots so food could not be withdrawn and the food check failed, triggering another
+        banking trip immediately. Fixed by calling <code>Bank.depositAll()</code> before checking
+        food, clearing the backpack so the preset fills it cleanly. Post-preset food count is now
+        logged to the console for diagnosis.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Dungeon Entrance Loop — Y-Coordinate Detection</div>
+      <div class="entry-desc">
+        Step B of <code>returnToDungeon()</code> used <code>z != 0</code> to detect underground
+        entry — but Taverley Dungeon is at z=0 just like the surface, so the check never fired.
+        The retry loop kept re-navving to the surface entrance coords and clicking the exit ladder
+        from inside the dungeon. Fixed: underground detection now checks <code>Y ≥ 9700</code>
+        (dungeon tiles confirmed at Y~9795). Added an early-out skip if already underground
+        on entry to the method. Same fix applied to the ladder-climb surface transition
+        (<code>Y &lt; 9700</code>) in <code>handleBanking()</code> Phase 1 and
+        <code>handleEmergencyLogout()</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Door Sequence — Infinite Retry, No Script Stop</div>
+      <div class="entry-desc">
+        <code>clickDoorAndWait()</code> previously returned <code>false</code> after two attempts
+        and stopped the script. Rewritten as an infinite <code>while (running)</code> loop:
+        navs to the door, waits up to 15s for the player to be within 8 tiles (object loaded),
+        clicks, waits up to 20s for the passage threshold. Re-checks after an extra 1.5–2.5s
+        wait before re-clicking (catches slow load screens where the player passed through during
+        the wait). Skips immediately if already past the door's threshold. Return type changed
+        from <code>boolean</code> to <code>void</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Dungeon Entrance — Infinite Retry on Slow Load Screens</div>
+      <div class="entry-desc">
+        The dungeon entrance click in Step B previously had one retry then stopped the script.
+        Replaced with a <code>while (!inside && running)</code> loop that re-navs to the entrance
+        and retries the click indefinitely, waiting up to 20s per attempt for <code>Y ≥ 9700</code>.
+        Handles cases where the map load screen takes 15–20 seconds.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">ImGui PopStyleColor Count — drawSettingsPanel</div>
+      <div class="entry-desc">
+        The final <code>PopStyleColor</code> loop count was wrong (16 instead of 14).
+        Exact push count for <code>drawSettingsPanel()</code>: 5× CheckMark left column +
+        5× CheckMark right column + 4× Food input styling = <strong>14</strong>.
+        The banking status / warning text pushes (3×) each self-pop immediately and must not
+        be included in the final loop. Over-popping was stealing color state from subsequent
+        widgets rendered in the same frame.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Potion Drink Race — delayUntil Dose Consumed</div>
+      <div class="entry-desc">
+        All four doses of a Charming potion or Overload were being interacted on the same tick
+        before any was consumed. Fixed by calling
+        <code>Execution.delayUntil(3000, () → !Backpack.contains(dose))</code>
+        after each successful <code>Backpack.interact(dose, "Drink")</code> —
+        waits for that specific dose name to leave the backpack before returning,
+        confirming the drink registered server-side. Applied to both
+        <code>handleCharmPotion()</code> and <code>handleOverload()</code>.
+      </div>
+    </div>
+
+  </div>
+
   <div class="footer">
     <span class="pulse"></span>
-    CHARM COLLECTOR &nbsp;·&nbsp; DEV SESSION 2026-02-25 &nbsp;·&nbsp; UPDATED &nbsp;·&nbsp; BOTWITHUS API 1.0.8
+    CHARM COLLECTOR &nbsp;·&nbsp; SESSION 2 — 2026-02-27 &nbsp;·&nbsp; BOTWITHUS API 1.0.8
   </div>
 
 </div>
