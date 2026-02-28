@@ -228,14 +228,14 @@
   }
 
   .entry-desc {
-    font-size: 14px;
-    color: var(--dim);
-    line-height: 1.55;
+    font-size: 15px;
+    color: #8fb8d8;
+    line-height: 1.6;
   }
 
   .entry-desc code {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--gold2);
     background: rgba(240,160,48,0.08);
     padding: 1px 5px;
@@ -316,11 +316,11 @@
     </div>
     <div class="stat">
       <div class="stat-label">Fixes</div>
-      <div class="stat-value" style="color: var(--green);">7</div>
+      <div class="stat-value" style="color: var(--green);">12</div>
     </div>
     <div class="stat">
       <div class="stat-label">Improvements</div>
-      <div class="stat-value">12</div>
+      <div class="stat-value">16</div>
     </div>
     <div class="stat">
       <div class="stat-label">Known Issues</div>
@@ -541,6 +541,70 @@
       </div>
     </div>
 
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Gson Bundled in includeInJar — Script Injector Failed to Load</div>
+      <div class="entry-desc">
+        Adding <code>com.google.code.gson:gson:2.10.1</code> to <code>includeInJar</code> bundled
+        Gson classes into the output jar. Since the BWU client already ships Gson on its classloader,
+        the injector hit a duplicate class conflict and refused to load the script entirely.
+        Fixed by keeping Gson in <code>implementation</code> only — compile-time visibility without
+        bundling. The client provides it at runtime.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">script.ini — Wrong Display Name and scriptClass After Rename</div>
+      <div class="entry-desc">
+        <code>src/main/resources/script.ini</code> still had <code>name=Breezy's Frame Maker</code>
+        and <code>scriptClass=net.botwithus.scripts.BreezysFrameMaker</code> after the rename.
+        The injector reads this file to display the script name and instantiate the class — the old
+        <code>scriptClass</code> meant it would find the jar but fail to load the entry point.
+        Updated to <code>name=Fort Forinthry Crafter</code> and
+        <code>scriptClass=net.botwithus.scripts.FortForinthryCrafter</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Break Scheduled on Load — Spurious Log Line Before Start</div>
+      <div class="entry-desc">
+        <code>onActivation()</code> was calling <code>scheduleNextBreak()</code>, printing
+        <em>"Next break in X min"</em> before the player clicked Start. The break clock was also
+        ticking from load time rather than Start time, meaning time spent on the settings panel
+        counted against the first break interval. Removed <code>scheduleNextBreak()</code> from
+        <code>onActivation()</code> entirely — it now only fires from the Start button and after
+        each break ends. <code>nextBreakAfterMs</code> initialised to <code>Long.MAX_VALUE</code>
+        as a safety net.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Camera Rotation Using java.awt.Robot — Detectable OS-Level Input</div>
+      <div class="entry-desc">
+        The camera rotation was using <code>java.awt.Robot.keyPress()</code> and
+        <code>keyRelease()</code> — OS-level synthetic input that bypasses the game's input
+        layer and is trivially detectable. Replaced entirely with
+        <code>KeyboardInput.pressKey()</code>, the same BWU API method already used for zoom.
+        <code>java.awt.Robot</code>, <code>java.awt.AWTException</code>, <code>Thread.sleep()</code>,
+        and the <code>awtRobot</code> field are completely removed.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Refined Planks Label Wrapping in Statistics Panel</div>
+      <div class="entry-desc">
+        <code>"Refined Planks Made"</code> was too long for the label column and wrapped onto a
+        second line, pushing the value onto its own row and misaligning the stats grid.
+        Shortened to <code>"Refined Made"</code> to match the width of <code>"Planks Made"</code>
+        and <code>"Frames Made"</code>.
+      </div>
+    </div>
+
   </div>
 
 
@@ -668,6 +732,55 @@
         Now the first glance happens at a natural interval, just like the camera and break timers.
         The safety-fallback session log save in <code>onDeactivation()</code> is also guarded with
         <code>if (startTimeMs &gt; 0)</code> so it doesn't write a zero-runtime log on a cold unload.
+      </div>
+    </div>
+
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Pipeline Failsafe — One Retry Then Reset to LOAD_PRESET</div>
+      <div class="entry-desc">
+        All three pipeline states (<code>LOGS_TO_PLANKS</code>, <code>PLANKS_TO_REFINED</code>,
+        <code>REFINED_TO_FRAMES</code>) now use a shared <code>failStep()</code> helper when they
+        detect the wrong inventory stage. First failure: waits 1.8–2.8 s, rescans, and retries the
+        same state (handles lag-induced detection misses). Second failure: resets to
+        <code>LOAD_PRESET</code> so the pipeline reloads a fresh inventory and restarts cleanly.
+        <code>craftRetries</code> is cleared on every successful state entry and on Start.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Camera Rotation — Subtle 1–2 Tap Nudges, Never a Full Spin</div>
+      <div class="entry-desc">
+        5 taps = 360° so each <code>KeyboardInput.pressKey()</code> call rotates ~72°. The old
+        3–8 tap range could spin the camera 216–576°, which looks completely inhuman. Reworked to
+        1 tap (72°) 90% of the time, 2 taps (144°) 10% of the time — subtle enough to look like
+        a player glancing around, never a frantic spin. Pre-action pause of 80–220 ms retained.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Long Breaks Gated Behind 1 Hour Session Time</div>
+      <div class="entry-desc">
+        The fat-tail 7–28 min break (5% chance) now only activates after the script has been
+        running for at least 1 hour total. Under 1 hour all breaks are 4–7 min — a new player
+        genuinely wouldn't step away for 28 min in the first hour. After 1 hour the long-break
+        chance fires naturally. A distinct log line <em>"Taking LONG break X.X min (fat-tail)"</em>
+        distinguishes these from normal breaks.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">@SuppressWarnings — Deprecation Warning Removed Without Gradle Change</div>
+      <div class="entry-desc">
+        The <code>--enable-preview</code> flag in <code>build.gradle.kts</code> without a matching
+        <code>options.release.set()</code> caused a blanket <em>"uses or overrides a deprecated API"</em>
+        warning on both classes. Suppressed cleanly with
+        <code>@SuppressWarnings({"deprecation", "preview"})</code> on both class declarations —
+        no build file changes required.
       </div>
     </div>
 
