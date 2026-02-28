@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #060a14;
-    --panel:    #0b1120;
-    --border:   #1a2a4a;
-    --gold:     #f0a030;
-    --gold2:    #ffd080;
-    --blue:     #3a8fff;
-    --blue2:    #7ab8ff;
-    --green:    #30d080;
-    --red:      #ff4a4a;
-    --orange:   #ff8c3a;
-    --muted:    #4a6080;
-    --text:     #c8d8f0;
-    --dim:      #6080a0;
+    --bg:    #060a14;
+    --panel: #0b1120;
+    --border:#1a2a4a;
+    --gold:  #f0a030;
+    --gold2: #ffd080;
+    --blue:  #3a8fff;
+    --blue2: #7ab8ff;
+    --green: #30d080;
+    --red:   #ff4a4a;
+    --orange:#ff8c3a;
+    --muted: #4a6080;
+    --text:  #c8d8f0;
+    --dim:   #6080a0;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,30 +38,14 @@
     content: '';
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
     pointer-events: none;
     z-index: 999;
   }
 
-  .container {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 40px 24px 80px;
-  }
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
 
-  /* ── Header ── */
-  .header {
-    text-align: center;
-    margin-bottom: 56px;
-    position: relative;
-  }
-
+  .header { text-align: center; margin-bottom: 56px; }
   .header::after {
     content: '';
     display: block;
@@ -109,7 +93,6 @@
     background: rgba(58,143,255,0.06);
   }
 
-  /* ── Stats bar ── */
   .stats-bar {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -150,7 +133,6 @@
     margin-top: 2px;
   }
 
-  /* ── Section ── */
   .section { margin-bottom: 44px; }
 
   .section-header {
@@ -177,14 +159,12 @@
     background: linear-gradient(90deg, var(--border), transparent);
   }
 
-  /* ── Entry cards ── */
   .entry {
     background: var(--panel);
     border: 1px solid var(--border);
     border-left: 3px solid var(--blue);
     margin-bottom: 12px;
     padding: 16px 20px;
-    position: relative;
     transition: border-color 0.2s, background 0.2s;
     animation: slideIn 0.4s ease both;
   }
@@ -197,7 +177,6 @@
   }
 
   .entry.fix     { border-left-color: var(--green); }
-  .entry.bug     { border-left-color: var(--red); }
   .entry.improve { border-left-color: var(--blue); }
   .entry.feature { border-left-color: var(--gold); }
   .entry.pending { border-left-color: var(--orange); }
@@ -214,7 +193,6 @@
   }
 
   .entry.fix     .entry-tag { color: var(--green);  background: rgba(48,208,128,0.07); }
-  .entry.bug     .entry-tag { color: var(--red);    background: rgba(255,74,74,0.07); }
   .entry.improve .entry-tag { color: var(--blue2);  background: rgba(58,143,255,0.07); }
   .entry.feature .entry-tag { color: var(--gold);   background: rgba(240,160,48,0.07); }
   .entry.pending .entry-tag { color: var(--orange); background: rgba(255,140,58,0.07); }
@@ -242,7 +220,6 @@
     border-radius: 2px;
   }
 
-  /* ── Known issues ── */
   .known {
     background: rgba(255,74,74,0.04);
     border: 1px solid rgba(255,74,74,0.2);
@@ -272,7 +249,6 @@
     padding: 1px 5px;
   }
 
-  /* ── Footer ── */
   .footer {
     margin-top: 64px;
     text-align: center;
@@ -312,19 +288,19 @@
   <div class="stats-bar">
     <div class="stat">
       <div class="stat-label">Features</div>
-      <div class="stat-value">11</div>
+      <div class="stat-value">13</div>
     </div>
     <div class="stat">
       <div class="stat-label">Fixes</div>
-      <div class="stat-value" style="color: var(--green);">12</div>
+      <div class="stat-value" style="color:var(--green);">12</div>
     </div>
     <div class="stat">
       <div class="stat-label">Improvements</div>
-      <div class="stat-value">16</div>
+      <div class="stat-value">11</div>
     </div>
     <div class="stat">
       <div class="stat-label">Known Issues</div>
-      <div class="stat-value" style="color: var(--red);">1</div>
+      <div class="stat-value" style="color:var(--red);">3</div>
     </div>
     <div class="stat">
       <div class="stat-label">API Version</div>
@@ -332,125 +308,85 @@
     </div>
     <div class="stat">
       <div class="stat-label">Status</div>
-      <div class="stat-value" style="font-size:13px; color: var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div>
+      <div class="stat-value" style="font-size:13px; color:var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div>
     </div>
   </div>
 
 
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!--  FEATURES                                                               -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- FEATURES -->
   <div class="section">
     <div class="section-header"><h2>Features</h2></div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">Two-Mode Pipeline — Frames Only &amp; Full Pipeline</div>
+      <div class="entry-title">Frames Pipeline — Multiple Modes</div>
       <div class="entry-desc">
-        Supports two operational modes toggled via UI checkbox.
-        <strong>Frames Only</strong> (default): preset loads refined planks, route is
-        Bank Chest → Woodworking Bench → repeat.
-        <strong>Full Pipeline</strong>: preset loads raw logs, route is
-        Bank Chest → Sawmill (logs→planks) → Sawmill (planks→refined) → Woodworking Bench (refined→frames) → repeat.
-        Mode is shown live in the top bar and persists across Start/Stop cycles.
+        Five pipeline modes selectable from a UI dropdown.
+        <strong>Refined to Frames</strong> (Workbench only) is the default.
+        Full options run from raw logs all the way through Sawmill → Woodworking Bench.
+        All object and interface interactions use confirmed packet values — no hardcoded
+        coords anywhere in the pipeline.
       </div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">Auto Wood-Type Detection — Priority Ordered</div>
+      <div class="entry-title">Flatpacks Sub-Module — Portable Workbench</div>
+      <div class="entry-desc">
+        Dedicated <code>FlatpacksScript</code> module for crafting flatpack furniture.
+        Route per batch: deposit → load preset → locate workbench → open interface →
+        select room → select item → construct → wait → repeat.
+        All 14 confirmed furniture types across Parlour, Kitchen, and Dining Room
+        are defined in <code>FlatpackType</code> with confirmed room p2 values and item indices.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Dynamic Workbench Detection — Name Scan, No Coords</div>
+      <div class="entry-desc">
+        The Portable Workbench is player-deployed and can be placed anywhere, so its
+        coordinates are never hardcoded. <code>findWorkbench()</code> runs a fresh
+        <code>SceneObjectQuery.name("Portable workbench")</code> scan within 7 tiles before
+        every batch — name-based rather than ID-based since the object ID can differ by location.
+        The live <code>x/y</code> from the scan result are used directly in the
+        <code>MiniMenu.interact()</code> call. If no object is found, a second pass tries
+        <code>NpcQuery.name("Portable workbench")</code> to handle the Grand Exchange variant
+        where it spawns as an NPC rather than a placed object.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Dynamic Bank Detection — Name Scan with Fallback</div>
+      <div class="entry-desc">
+        Both deposit and preset-load steps scan for a nearby bank chest by name
+        (<code>SceneObjectQuery.name("Bank chest")</code>) within 7 tiles before acting.
+        The live coords from the scan result are passed directly — nothing is hardcoded.
+        Falls back to the confirmed Fort Forinthry chest as a safety net only if no chest
+        is found nearby.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Auto Wood-Type Detection — Priority Ordered by Name</div>
       <div class="entry-desc">
         Inventory is scanned on every preset load using <code>WoodType.detectInventory()</code>,
-        which identifies wood tier and processing stage (Logs / Planks / Refined) entirely by item name
-        — no hardcoded IDs. Priority order: Elder → Magic → Yew → Mahogany → Acadia → Maple → Teak → Willow → Oak → Wooden.
-        Current wood and stage are displayed live in the UI status bar and drive the state machine's
-        next-state resolution.
+        identifying wood tier and processing stage (Logs / Planks / Refined) entirely by item name —
+        no hardcoded IDs. Priority: Elder → Magic → Yew → Mahogany → Acadia → Maple → Teak → Willow → Oak → Wooden.
+        Drives the state machine's next-state resolution and is shown live in the UI.
       </div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">Camera Rotation — A/D Key Nudges via BWU API</div>
+      <div class="entry-title">Camera Rotation — A/D Nudges via BWU API</div>
       <div class="entry-desc">
-        Rotates the RS3 camera every 2–5 minutes using <code>KeyboardInput.pressKey()</code> on
-        the <code>A</code> and <code>D</code> keys — the same keys most RS3 players use to pan the
-        camera, routed through BWU's own input layer. 5 taps ≈ 360° so each press is ~72°; kept to
-        1 tap 90% of the time and 2 taps 10% of the time for subtle, human-sized nudges.
-        Direction alternates left/right with a 75% flip chance, 25% same-side repeat.
-        No <code>java.awt</code> dependency whatsoever — key codes are defined as plain
-        <code>int</code> constants inside the class.
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Gear Tab Check — Equipment / Skills / Backpack Idle Glance</div>
-      <div class="entry-desc">
-        Every 10–15 minutes, simulates a player glancing at their gear and skill XP.
-        Uses <code>Interfaces.dragComponents(src, dst)</code> via <code>ComponentQuery(1477).componentIndex(n)</code>
-        — works regardless of where tabs are placed on the customisable toolbar.
-        Sequence: Equipment tab (dwell 1.8–4.2s) → Skills tab → hover Construction skill component
-        (index = <code>Skills.CONSTRUCTION.getId() * 2 + 1</code>) to fire the XP tooltip → return to Backpack.
-        Fires during the main loop and also inside <code>waitForProgress</code> so it is not blocked by long crafts.
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Break System — Scheduled AFK Breaks</div>
-      <div class="entry-desc">
-        Takes a 2–3 minute break every 10–20 minutes of active play (double-rolled for natural spread).
-        While on break the script idles in the loop and occasionally performs a skills-tab flick via
-        <code>Interfaces.dragComponents()</code> to simulate a player checking XP between sessions.
-        Break and timing state is displayed live in the Settings panel:
-        <code>Next break in X.X min</code> when active, <code>Break: X.X min remaining</code> when paused.
-        Break state is reset on STOP and re-seeded on START.
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Session Log — Auto-saved on Finish &amp; Stop</div>
-      <div class="entry-desc">
-        Writes a plain-text session log to
-        <code>%USERPROFILE%\BotWithUs\logs\FrameMaker_YYYY-MM-DD_HH-mm-ss.txt</code>
-        (falls back to <code>user.home</code> on non-Windows).
-        Log includes: runtime, mode, batch/plank/frame counts with hourly rates,
-        Construction level and XP gained with XP/hr, and active feature flags.
-        Saved automatically when the <code>DONE</code> state is reached and again in
-        <code>onDeactivation()</code> as a safety fallback.
-      </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Rename — Breezy's Frame Maker → Fort Forinthry Crafter</div>
-      <div class="entry-desc">
-        Full rename across all three source files (<code>FortForinthryCrafter.java</code>,
-        <code>FortForinthryCrafterGraphicsContext.java</code>, <code>WoodType.java</code>).
-        All console prefixes, log file names, class names, and UI labels updated to match.
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Session Fatigue — Break Frequency Increases Over Time</div>
-      <div class="entry-desc">
-        Break intervals now shrink as the session ages. A fatigue factor decays from
-        <code>1.0 → 0.5</code> over the first 3 hours — a player who breaks every 15 min at
-        start will break every ~7.5 min after 3 hours. Floored at 5 minutes. The
-        <code>[Break]</code> log line now prints the current fatigue factor so you can see
-        it working. Break duration changed to <strong>4–6 min</strong> (avg ~5 min) with a 4-minute floor.
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Post-Login Warm-Up — First Batch Extra-Long Delays</div>
-      <div class="entry-desc">
-        The very first batch after clicking Start gets 4–9 s of warm-up settle time instead of
-        the normal 2–5 s, with a 40% chance of a second 2–5 s "distraction" pause — simulating
-        a player reading chat or tabbing back in. <code>firstBatch</code> is reset each Start press
-        and cleared after the first successful batch completes.
+        Rotates the camera every 2–5 minutes using <code>KeyboardInput.pressKey()</code> on
+        <code>A</code>/<code>D</code> — through BWU's own input layer, no <code>java.awt</code>.
+        1 tap (72°) 90% of the time, 2 taps (144°) 10% — subtle glances only, never a spin.
+        Direction alternates with a 75% flip chance.
       </div>
     </div>
 
@@ -458,185 +394,110 @@
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Camera Zoom — Insert / Delete Key Taps</div>
       <div class="entry-desc">
-        A new <code>tickZoom()</code> fires every 15–40 min and taps <code>Insert</code> (zoom in)
-        or <code>Delete</code> (zoom out) 1–4 times via <code>KeyboardInput.pressKey()</code> —
-        the BWU API's own input layer, no Robot required. Scheduled and reset on Start alongside
-        camera rotation.
+        <code>tickZoom()</code> fires every 15–40 minutes and taps <code>Insert</code> (zoom in)
+        or <code>Delete</code> (zoom out) 1–4 times via <code>KeyboardInput.pressKey()</code>.
+        Scheduled and reset on Start alongside camera rotation.
       </div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">GE Price Tracking — Live Wiki Fetch (Logs → Frames Profit)</div>
+      <div class="entry-title">Gear Tab Check — Equipment / Skills / Backpack Idle Glance</div>
       <div class="entry-desc">
-        On script load, a daemon thread fetches the RS Wiki's live GE price JSON
-        (<code>Module:GEPrices/data.json</code>). After each frame batch, profit is calculated as
-        <code>(framePrice − logPrice) × framesThisBatch</code> and accumulated into
-        <code>totalProfitGp</code>. The Statistics panel shows log price, frame price, per-item
-        margin, total profit, and profit/hr. Session log also includes the profit section.
-        Uses Gson already on the classpath via the BWU API dependency — no extra libs needed.
+        Every 10–15 minutes, simulates a player glancing at gear and skill XP.
+        Uses <code>Interfaces.dragComponents()</code> via option-based <code>ComponentQuery</code>
+        — resilient to toolbar rearrangement. Sequence: Equipment → Skills → hover Construction
+        XP tooltip → return to Backpack. Fires during both the main loop and inside
+        <code>waitForProgress</code> so long crafts don't block it.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Break System — Scheduled AFK Breaks with Session Fatigue</div>
+      <div class="entry-desc">
+        Takes a 4–7 min break every 10–20 minutes. Break intervals shrink as the session ages
+        (fatigue factor decays 1.0 → 0.5 over 3 hours). After 1 hour, a 5% fat-tail chance can
+        extend a break to 7–28 minutes. While idle, occasionally flicks to the Skills tab.
+        Break state and countdown shown live in the Settings panel.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Post-Login Warm-Up — Extra-Long First Batch Delays</div>
+      <div class="entry-desc">
+        The first batch after Start gets 4–9 s of warm-up settle time with a 40% chance of
+        a second 2–5 s distraction pause, simulating a player reading chat or tabbing back in.
+        Reset on each Start press.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">GE Price Tracking — Live Wiki Fetch</div>
+      <div class="entry-desc">
+        A daemon thread fetches the RS Wiki's live GE price JSON on load. After each frame batch,
+        profit is calculated as <code>(framePrice − logPrice) × framesThisBatch</code>.
+        Statistics panel shows log price, frame price, per-item margin, total profit, and profit/hr.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Session Log — Auto-saved on Finish &amp; Stop</div>
+      <div class="entry-desc">
+        Writes a plain-text log to
+        <code>%USERPROFILE%\BotWithUs\logs\FortForinthryCrafter_YYYY-MM-DD_HH-mm-ss.txt</code>.
+        Includes runtime, mode, batch counts with hourly rates, Construction XP gained,
+        active flags, and flatpacks stats when applicable. Saved on <code>DONE</code> and
+        again in <code>onDeactivation()</code> as a safety fallback (guarded with
+        <code>if (startTimeMs &gt; 0)</code> to avoid zero-runtime logs on cold unload).
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Rename — Breezy's Frame Maker → Fort Forinthry Crafter</div>
+      <div class="entry-desc">
+        Full rename across all source files, console prefixes, log file names, class names,
+        UI labels, and <code>script.ini</code>.
       </div>
     </div>
 
   </div>
 
 
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!--  TODAY'S LOG — FIXES                                                    -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- FIXES -->
   <div class="section">
-    <div class="section-header"><h2>Today's Log — Fixes</h2></div>
+    <div class="section-header"><h2>Fixes</h2></div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">ImGui Style Bleed — PopStyleColor Loop</div>
+      <div class="entry-title">Compile Error — WORKBENCH_X / WORKBENCH_Y Missing Constants</div>
       <div class="entry-desc">
-        The original UI used ten back-to-back raw <code>ImGui.PopStyleColor()</code> calls at the end
-        of <code>drawSettingsPanel()</code>. Because some of those pushes lived inside conditional
-        branches (banking, break state, aggro-rotate warnings), the pop count was only correct when every
-        branch fired — any other path left the ImGui style stack mismatched, bleeding gold/blue tints onto
-        the rest of the client UI. Fixed by eliminating all deferred pop patterns: every
-        <code>PushStyleColor</code> now has a matching <code>PopStyleColor</code> in the same scope,
-        unconditionally. Conditional blocks push and pop within their own <code>if/else</code> arms.
+        <code>FlatpacksScript</code> referenced <code>FlatpackType.WORKBENCH_X/Y</code> which
+        were never defined — the Portable Workbench is player-deployed so static coords are
+        meaningless. Removed the constant references entirely and replaced with live coordinate
+        extraction from the scene query result each batch.
       </div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">Client Crash After 2–3 Batches — Volatile Field Torn Reads</div>
+      <div class="entry-title">Compile Error — Wrong SceneObject Import Package</div>
       <div class="entry-desc">
-        The render thread was reading <code>running</code>, <code>onBreak</code>, <code>currentWood</code>,
-        and <code>currentStage</code> multiple times mid-frame while the script thread could write them
-        concurrently. This produced impossible push/pop paths on some frames and caused an eventual client
-        crash. Fixed by snapshotting all volatile fields once at the top of each draw method
-        (<code>final boolean running = script.running</code>, etc.) so the render thread works with a
-        consistent frame-start snapshot throughout.
+        <code>FlatpacksScript</code> imported <code>entities.objects.SceneObject</code> (plural)
+        but the API path is <code>entities.object.SceneObject</code> (singular).
       </div>
     </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Statistics Panel — Skill Object Double-Instantiation</div>
-      <div class="entry-desc">
-        <code>drawStatisticsPanel()</code> was calling <code>new Skill(Skills.CONSTRUCTION)</code> twice
-        per frame — once for <code>getExperience()</code> and once for <code>getLevel()</code>.
-        If the API returned different snapshots between the two calls (possible mid-tick) the XP gain
-        delta could go negative or report an incorrect level. Both calls are now combined into a single
-        <code>Skill con = new Skill(Skills.CONSTRUCTION)</code> instantiation, with both values read
-        from the same object. The whole block is wrapped in a <code>try/catch</code> so a transient
-        API failure never propagates to the render thread.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Break Idle Tab Flick — Raw MiniMenu Replaced with dragComponents</div>
-      <div class="entry-desc">
-        The break idle flick previously used raw <code>MiniMenu.interact(ComponentAction.COMPONENT.getType(), 1, 0, TAB_SKILLS_P3)</code>
-        and <code>TAB_BACKPACK_P3</code> param3 constants. These are brittle: the param3 values are
-        tied to the exact layout of interface 1473 and break silently if Jagex changes component ordering.
-        Replaced with <code>Interfaces.dragComponents(src, dst)</code> using
-        <code>ComponentQuery(1477).componentIndex(n)</code> — matches exactly how the gear check opens
-        tabs and is resilient to toolbar customisation.
-      </div>
-    </div>
-
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Gson Bundled in includeInJar — Script Injector Failed to Load</div>
-      <div class="entry-desc">
-        Adding <code>com.google.code.gson:gson:2.10.1</code> to <code>includeInJar</code> bundled
-        Gson classes into the output jar. Since the BWU client already ships Gson on its classloader,
-        the injector hit a duplicate class conflict and refused to load the script entirely.
-        Fixed by keeping Gson in <code>implementation</code> only — compile-time visibility without
-        bundling. The client provides it at runtime.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">script.ini — Wrong Display Name and scriptClass After Rename</div>
-      <div class="entry-desc">
-        <code>src/main/resources/script.ini</code> still had <code>name=Breezy's Frame Maker</code>
-        and <code>scriptClass=net.botwithus.scripts.BreezysFrameMaker</code> after the rename.
-        The injector reads this file to display the script name and instantiate the class — the old
-        <code>scriptClass</code> meant it would find the jar but fail to load the entry point.
-        Updated to <code>name=Fort Forinthry Crafter</code> and
-        <code>scriptClass=net.botwithus.scripts.FortForinthryCrafter</code>.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Break Scheduled on Load — Spurious Log Line Before Start</div>
-      <div class="entry-desc">
-        <code>onActivation()</code> was calling <code>scheduleNextBreak()</code>, printing
-        <em>"Next break in X min"</em> before the player clicked Start. The break clock was also
-        ticking from load time rather than Start time, meaning time spent on the settings panel
-        counted against the first break interval. Removed <code>scheduleNextBreak()</code> from
-        <code>onActivation()</code> entirely — it now only fires from the Start button and after
-        each break ends. <code>nextBreakAfterMs</code> initialised to <code>Long.MAX_VALUE</code>
-        as a safety net.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Camera Rotation — Removed java.awt.Robot, Arrow Keys → A/D</div>
-      <div class="entry-desc">
-        Camera rotation originally used <code>java.awt.Robot.keyPress()</code> and
-        <code>keyRelease()</code> — OS-level synthetic input that bypasses the game's input layer
-        and is a known ban signal. Replaced entirely with <code>KeyboardInput.pressKey()</code>
-        on <code>A</code>/<code>D</code>, the keys RS3 players naturally use for camera panning.
-        All of <code>java.awt.Robot</code>, <code>java.awt.AWTException</code>,
-        <code>java.awt.event.KeyEvent</code>, <code>Thread.sleep()</code>, and the
-        <code>awtRobot</code> field are gone. Key codes are now plain <code>int</code> constants
-        (<code>KEY_A = 65</code>, <code>KEY_D = 68</code>) so no <code>java.awt</code> import
-        exists anywhere in the file.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Refined Planks Label Wrapping in Statistics Panel</div>
-      <div class="entry-desc">
-        <code>"Refined Planks Made"</code> was too long for the label column and wrapped onto a
-        second line, pushing the value onto its own row and misaligning the stats grid.
-        Shortened to <code>"Refined Made"</code> to match the width of <code>"Planks Made"</code>
-        and <code>"Frames Made"</code>.
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!--  TODAY'S LOG — IMPROVEMENTS                                             -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="section">
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">Compile Error — Missing Backpack Import</div>
       <div class="entry-desc">
-        <code>countBackpack()</code> called <code>Backpack.container()</code> but
+        <code>countOutput()</code> called <code>Backpack.container()</code> but
         <code>net.botwithus.rs3.game.inventories.Backpack</code> was never imported.
-        The compiler reported <em>"cannot find symbol variable Backpack"</em> at line 794.
-        Added the explicit import alongside <code>Bank</code>.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Compile Error — Gson Not Explicitly Declared as Dependency</div>
-      <div class="entry-desc">
-        <code>loadGEPrices()</code> used <code>com.google.gson.Gson</code> and
-        <code>com.google.gson.JsonObject</code> which were only available transitively through
-        <code>botwithus-api</code>. Transitive deps are not guaranteed across API updates.
-        Added <code>com.google.code.gson:gson:2.10.1</code> explicitly to both
-        <code>implementation</code> and <code>includeInJar</code> in <code>build.gradle.kts</code>,
-        and converted the fully-qualified inline references to top-level imports.
       </div>
     </div>
 
@@ -644,61 +505,155 @@
       <div class="entry-tag">Fix</div>
       <div class="entry-title">Compile Error — Class Name / File Name Mismatch</div>
       <div class="entry-desc">
-        The class was renamed to <code>FortForinthryCrafter</code> but the physical
-        <code>.java</code> file on disk was still named <code>BreezysFrameMaker.java</code>.
-        Java requires the public class name to match the filename exactly. The output file is
-        now <code>FortForinthryCrafter.java</code> and <code>build.gradle.kts</code> updated
-        to produce <code>FortForinthryCrafter.jar</code>.
+        Class renamed to <code>FortForinthryCrafter</code> but the file on disk was still
+        <code>BreezysFrameMaker.java</code>. Java requires the public class name to match the
+        filename. <code>build.gradle.kts</code> updated to produce <code>FortForinthryCrafter.jar</code>.
       </div>
     </div>
 
-    <div class="section-header"><h2>Today's Log — Improvements</h2></div>
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">LOGS_TO_PLANKS — Hardcoded State Transition</div>
+      <div class="entry-desc">
+        The <code>LOGS_TO_PLANKS</code> case always continued to <code>PLANKS_TO_REFINED</code>
+        regardless of the selected pipeline mode. Now checks <code>pipelineMode</code> and routes
+        to <code>LOAD_PRESET</code> (bank and repeat) when the mode is <code>LOGS_TO_PLANKS</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">PipelineMode Labels — Unicode Arrows Rendered as "?"</div>
+      <div class="entry-desc">
+        Enum labels used <code>→</code> Unicode arrows passed directly into <code>ImGui.Combo()</code>.
+        BWU ImGui does not render non-ASCII — every label showed as "?". Replaced all arrows
+        with ASCII <code>"to"</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">ImGui Style Bleed — Mismatched Push/Pop Counts</div>
+      <div class="entry-desc">
+        Deferred <code>PopStyleColor</code> calls were only correct when every conditional branch
+        fired, leaving the style stack unbalanced on other paths and bleeding tints onto the
+        rest of the client UI. Every <code>PushStyleColor</code> now has a matching pop in the
+        same scope, unconditionally.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Client Crash After 2–3 Batches — Volatile Field Torn Reads</div>
+      <div class="entry-desc">
+        The render thread read <code>running</code>, <code>onBreak</code>, <code>currentWood</code>,
+        and <code>currentStage</code> multiple times mid-frame while the script thread could write
+        them concurrently, eventually crashing the client. Fixed by snapshotting all volatile
+        fields once at the top of each draw method.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Statistics Panel — Skill Object Double-Instantiation</div>
+      <div class="entry-desc">
+        <code>drawStatisticsPanel()</code> called <code>new Skill(Skills.CONSTRUCTION)</code>
+        twice per frame — different snapshots between calls could make XP gain go negative.
+        Combined into a single instantiation, wrapped in <code>try/catch</code>.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Gson Bundled in includeInJar — Script Failed to Load</div>
+      <div class="entry-desc">
+        Bundling Gson into the output jar caused a duplicate class conflict since the BWU client
+        already ships it. Fixed by keeping Gson in <code>implementation</code> only — the client
+        provides it at runtime.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Break Scheduled on Load — Countdown Before Start</div>
+      <div class="entry-desc">
+        <code>onActivation()</code> called <code>scheduleNextBreak()</code>, printing a break
+        countdown before Start was clicked and counting settings-panel time against the first
+        break interval. Removed from activation — now only fires from the Start button.
+        <code>nextBreakAfterMs</code> initialised to <code>Long.MAX_VALUE</code> as a guard.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Camera Rotation — Removed java.awt.Robot</div>
+      <div class="entry-desc">
+        Camera rotation used <code>java.awt.Robot.keyPress()</code> — OS-level synthetic input
+        that bypasses the game's input layer and is a known ban signal. Replaced entirely with
+        <code>KeyboardInput.pressKey()</code> on <code>A</code>/<code>D</code>.
+        All <code>java.awt</code> references removed from the file.
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- IMPROVEMENTS -->
+  <div class="section">
+    <div class="section-header"><h2>Improvements</h2></div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">humanDelay — Switched to API RandomGenerator</div>
+      <div class="entry-title">humanDelay — True Flat Distribution with Fat-Tail Variant</div>
       <div class="entry-desc">
-        The original <code>humanDelay()</code> used a custom triangular distribution over
-        <code>java.util.Random</code> with a fatigue multiplier growing over the session.
-        Replaced with the BotWithUs API's own <code>RandomGenerator.nextInt(min, max)</code>,
-        double-rolled and averaged to produce a tighter midpoint distribution without custom math.
-        This matches the pattern used in CharmCollector and ensures the RNG is the same source the
-        API uses internally — no mixing of separate seed streams.
+        Replaced the double-rolled average <code>(a + b) / 2</code> (which clusters near the
+        midpoint) with a single <code>RandomGenerator.nextInt()</code> — every value in the range
+        equally likely. Added <code>humanDelayWide()</code> with a 5% fat-tail chance of a
+        2–4× pause simulating a glance away. <code>driftDelay()</code> delegates to
+        <code>humanDelayWide</code> and additionally widens its range up to 2× over the first
+        2 hours of a session.
       </div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">Camera Scheduling — Double-Rolled Next Delay</div>
+      <div class="entry-title">Pipeline Failsafe — One Retry Then Reset to LOAD_PRESET</div>
       <div class="entry-desc">
-        The old <code>scheduleCameraMove()</code> did a single <code>humanDelay(120_000, 300_000)</code>
-        producing a flat uniform distribution across the full 2–5 minute window.
-        Now double-rolled and averaged: <code>(a + b) / 2</code> — identical to CharmCollector's
-        <code>handleCameraRotation</code> scheduling. This produces a smoother bell-shaped spread
-        that clusters around the 3-minute midpoint rather than treating every interval as equally likely.
+        All pipeline states use a shared <code>failStep()</code> helper when they detect the
+        wrong inventory stage. First failure: waits 1.8–2.8 s and retries (handles lag misses).
+        Second failure: resets to <code>LOAD_PRESET</code> for a clean reload.
+        <code>craftRetries</code> is cleared on every successful state entry and on Start.
       </div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">waitForProgress — Gear Check Ticked During Crafting</div>
+      <div class="entry-title">Preset Inventory Gate — Poll Before Reading Stage</div>
       <div class="entry-desc">
-        The crafting wait loop previously only ticked the camera. Now also calls <code>tickGearCheck()</code>
-        on every poll iteration so the 10–15 minute gear glance can fire mid-craft without needing to
-        wait for the main loop to resume. This prevents the gear check from building up a backlog
-        during long <code>REFINED_TO_FRAMES</code> waits (up to 90 seconds per batch).
+        After the bank closes post-preset, the code now polls for up to 4 seconds for
+        <code>hasPlanks()</code> / <code>detectInventory()</code> to return a valid result
+        before reading the current stage. Previously a blind fixed delay could read an empty
+        backpack and send the state machine to <code>DONE</code> prematurely on a slow server.
       </div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">Mid-Craft AFK Probability — Session-Age Scaled</div>
+      <div class="entry-title">waitForProgress — Gear Check and Camera Ticked During Crafting</div>
       <div class="entry-desc">
-        Random mid-craft micro-pauses (when <code>randomAfk</code> is enabled) now use
-        <code>RandomGenerator.nextInt(0, 10_000) &lt; (int)(afkChance * 10_000)</code> instead of
-        the old <code>java.util.Random.nextDouble()</code> comparison. The probability still scales
-        from 3% at session start to 7% after 2 hours, but the source of randomness is now the API's
-        own generator, keeping everything on a consistent RNG.
+        The crafting wait loop now calls <code>tickGearCheck()</code> and <code>tickCamera()</code>
+        on every poll iteration. Prevents either timer building up a backlog during long
+        <code>REFINED_TO_FRAMES</code> waits (up to 90 s per batch).
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Mid-Craft AFK — Session-Age Scaled Probability</div>
+      <div class="entry-desc">
+        Random mid-craft micro-pauses (when <code>randomAfk</code> is enabled) scale from 3%
+        at session start to 7% after 2 hours. Only fires at the Woodworking Bench — disabled
+        at the Sawmill where a pause would consume output before it can be scanned.
       </div>
     </div>
 
@@ -706,60 +661,8 @@
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Between-Batch Pause — 8% Longer Glance-Away</div>
       <div class="entry-desc">
-        After each completed frame batch, there is now an 8% chance of a longer 2–4 second pause
-        (vs the normal 400–900ms settle) using <code>RandomGenerator.nextInt(0, 100) &lt; 8</code>.
-        Simulates a player glancing at chat, checking XP, or briefly looking away between crafting
-        sessions. The other 92% of batches use the short settle, keeping overall throughput high.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Logout Action — Constants Extracted</div>
-      <div class="entry-desc">
-        The exit-to-lobby sequence previously used inline magic numbers in the <code>DONE</code> branch.
-        Extracted to named constants: <code>LOGOUT_MENU_P2 = 1</code>, <code>LOGOUT_MENU_P3 = 96796771</code>,
-        <code>EXIT_LOBBY_P3 = 93913157</code> — matching the same constants used in CharmCollector
-        for consistency across scripts. Both <code>ComponentAction.COMPONENT</code> interact calls
-        are now self-documenting.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">onActivation — Gear Check Timer Seeded</div>
-      <div class="entry-desc">
-        <code>onActivation()</code> now seeds <code>nextGearCheckMs</code> to 10–15 minutes after
-        load (double-rolled). Previously the gear check timer was zero, meaning the first
-        <code>tickGearCheck()</code> call would fire immediately on the first loop tick after Start.
-        Now the first glance happens at a natural interval, just like the camera and break timers.
-        The safety-fallback session log save in <code>onDeactivation()</code> is also guarded with
-        <code>if (startTimeMs &gt; 0)</code> so it doesn't write a zero-runtime log on a cold unload.
-      </div>
-    </div>
-
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Pipeline Failsafe — One Retry Then Reset to LOAD_PRESET</div>
-      <div class="entry-desc">
-        All three pipeline states (<code>LOGS_TO_PLANKS</code>, <code>PLANKS_TO_REFINED</code>,
-        <code>REFINED_TO_FRAMES</code>) now use a shared <code>failStep()</code> helper when they
-        detect the wrong inventory stage. First failure: waits 1.8–2.8 s, rescans, and retries the
-        same state (handles lag-induced detection misses). Second failure: resets to
-        <code>LOAD_PRESET</code> so the pipeline reloads a fresh inventory and restarts cleanly.
-        <code>craftRetries</code> is cleared on every successful state entry and on Start.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Camera Rotation — Subtle 1–2 Tap Nudges, Never a Full Spin</div>
-      <div class="entry-desc">
-        5 taps = 360° so each <code>KeyboardInput.pressKey()</code> call rotates ~72°. The old
-        3–8 tap range could spin the camera 216–576°, which looks completely inhuman. Reworked to
-        1 tap (72°) 90% of the time, 2 taps (144°) 10% of the time — subtle enough to look like
-        a player glancing around, never a frantic spin. Pre-action pause of 80–220 ms retained.
+        After each completed batch there is an 8% chance of a 2–4 s pause instead of the
+        normal 400–900 ms settle, simulating a player glancing at chat or checking XP.
       </div>
     </div>
 
@@ -767,124 +670,84 @@
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Long Breaks Gated Behind 1 Hour Session Time</div>
       <div class="entry-desc">
-        The fat-tail 7–28 min break (5% chance) now only activates after the script has been
-        running for at least 1 hour total. Under 1 hour all breaks are 4–7 min — a new player
-        genuinely wouldn't step away for 28 min in the first hour. After 1 hour the long-break
-        chance fires naturally. A distinct log line <em>"Taking LONG break X.X min (fat-tail)"</em>
-        distinguishes these from normal breaks.
+        The fat-tail 7–28 min break (5% chance) only activates after 1 hour of total session
+        time. Under 1 hour all breaks are 4–7 min. A distinct log line flags long breaks.
       </div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">@SuppressWarnings — Deprecation Warning Removed Without Gradle Change</div>
+      <div class="entry-title">Break Resume — Camera and Gear Timers Rescheduled</div>
       <div class="entry-desc">
-        The <code>--enable-preview</code> flag in <code>build.gradle.kts</code> without a matching
-        <code>options.release.set()</code> caused a blanket <em>"uses or overrides a deprecated API"</em>
-        warning on both classes. Suppressed cleanly with
-        <code>@SuppressWarnings({"deprecation", "preview"})</code> on both class declarations —
-        no build file changes required.
+        On break end, <code>nextCameraMoveMs</code> and <code>nextGearCheckMs</code> are pushed
+        forward from the current time, preventing a cluster of gear check + camera nudge +
+        first action all firing in the same second after resuming.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Tab Check — Option-Based Lookup, Not Hardcoded Indices</div>
+      <div class="entry-desc">
+        Replaced hardcoded component slot indices with
+        <code>ComponentQuery(1477).option("Equipment").hidden(false)</code> (and similarly for
+        Skills / Backpack). The <code>hidden(false)</code> filter skips missing tabs silently.
+        Resilient to toolbar rearrangement.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">onActivation — Gear Check Timer Seeded at Natural Interval</div>
+      <div class="entry-desc">
+        <code>nextGearCheckMs</code> is now seeded to 10–15 minutes after load.
+        Previously it was zero so the first gear check fired immediately on the first loop tick.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Logout Action — Magic Numbers Extracted to Constants</div>
+      <div class="entry-desc">
+        The exit-to-lobby sequence used inline magic numbers in the <code>DONE</code> branch.
+        Extracted to named constants: <code>LOGOUT_MENU_P2</code>, <code>LOGOUT_MENU_P3</code>,
+        <code>EXIT_LOBBY_P3</code> — self-documenting and consistent with other scripts.
       </div>
     </div>
 
   </div>
 
 
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!--  KNOWN ISSUES                                                           -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- KNOWN ISSUES -->
   <div class="section">
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">humanDelay — Replaced Double-Roll Average with True Wide-Spread Roll</div>
-      <div class="entry-desc">
-        The previous <code>humanDelay()</code> double-rolled and averaged: <code>(a + b) / 2</code>.
-        This creates a <strong>bell curve clustered around the midpoint</strong> — a call like
-        <code>humanDelay(40, 50)</code> almost always returns ~45 ms, making patterns detectable.
-        Replaced with a single <code>RandomGenerator.nextInt(0, range)</code> so every value
-        in the range is equally likely. Added a new <code>humanDelayWide()</code> that has a
-        <strong>5% chance of a 2–4× fat-tail pause</strong> (simulating a player glancing away),
-        used for all inter-action gaps. <code>driftDelay()</code> now delegates to
-        <code>humanDelayWide</code> for maximum spread.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Break Length — Wide Single Roll, Occasional Long Breaks</div>
-      <div class="entry-desc">
-        Break duration was previously computed as <code>(a + b) / 2</code> of two
-        <code>humanDelay(4min, 6min)</code> calls — another bell curve stuck near 5 minutes.
-        Now uses a single <code>humanDelayWide(4min, 7min)</code> call. The 5% fat-tail chance
-        means ~1-in-20 breaks stretches to 7–28 minutes, simulating a player genuinely stepping
-        away from the desk. The other 95% span the full 4–7 minute range uniformly.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Break Interval Scheduling — Wide Roll Replaces Double-Roll Average</div>
-      <div class="entry-desc">
-        <code>scheduleNextBreak()</code> was also using <code>(a + b) / 2</code>, causing break
-        intervals to cluster near the midpoint of the 10–20 minute window. Switched to a single
-        <code>humanDelayWide(baseMin, baseMax)</code> so intervals span the full range. The fat-tail
-        also produces occasional very long play segments (up to ~80 min) before a break — realistic
-        for a focused player.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Break Idle Poll — Wide Random Dwell Instead of Narrow 4–7 s</div>
-      <div class="entry-desc">
-        While on break, the script previously polled every <code>humanDelay(4000, 7000)</code> ms —
-        a roughly uniform 4–7 s interval that could be detected as a heartbeat. Changed to
-        <code>humanDelayWide(3000, 12000)</code> so idle polls range from 3 s to 12 s, with the
-        fat-tail occasionally producing 12–48 s silences. This more closely resembles a player
-        who is genuinely not watching the screen.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">Tab Check — Option-Based Lookup Replaces Hardcoded Component Indices</div>
-      <div class="entry-desc">
-        The gear tab check previously used <code>ComponentQuery(1477).componentIndex(117/112/106/101/325/320)</code>
-        — hardcoded slot indices that break silently if the player has rearranged or hidden toolbar
-        tabs. Replaced with <code>ComponentQuery(TAB_INTERFACE).option("Equipment").hidden(false)</code>
-        (and similarly for "Skills" / "Backpack"). The <code>hidden(false)</code> filter means
-        any missing tab is skipped silently rather than causing a null-drag. Both
-        <code>tickGearCheck()</code> and <code>doIdleTabFlick()</code> updated.
-        Skills hover now uses <code>option("Construction").hidden(false)</code> on the skills panel
-        instead of a computed component index.
-      </div>
-    </div>
-
-    <div class="section-header"><h2>Known Issues / To Fix</h2></div>
+    <div class="section-header"><h2>Known Issues</h2></div>
 
     <div class="known">
-      <div class="known-title">Bank Chest OBJECT4 — Preset Load timing not verified live</div>
+      <div class="known-title">Flatpacks — GE NPC Name and Action Slot Not Confirmed</div>
       <div class="known-desc">
-        The preset load flow clicks the Bank Chest with <code>ObjectAction.OBJECT4</code> then waits for
-        <code>Bank::isOpen</code> and <code>!Bank::isOpen</code> in sequence. In testing this is reliable,
-        but the window between the bank closing and the preset actually populating the backpack is not
-        formally gated — <code>refreshInventory()</code> fires immediately after the close delay.
-        If the preset is slow to apply, <code>currentWood</code> could be null on the first check,
-        sending the state machine to <code>DONE</code> prematurely. A short
-        <code>Execution.delayUntil</code> polling for a non-null inventory scan would be more robust.
+        The GE variant of the Portable Workbench is assumed to spawn as an NPC named
+        <code>"Portable workbench"</code> responding to <code>NPCAction.NPC1</code>.
+        Both need confirming via packet capture at the Grand Exchange before the GE path
+        can be trusted.
       </div>
     </div>
 
     <div class="known">
-      <div class="known-title">Gear check fires during break — skipped silently</div>
+      <div class="known-title">Flatpacks — FLATPACK_IF Interface ID Not Confirmed</div>
       <div class="known-desc">
-        <code>tickBreak()</code> returns early before <code>tickGearCheck()</code> is called in the
-        main loop, so if a gear check becomes due while the script is on break, it won't fire until
-        the break ends. <code>nextGearCheckMs</code> is not reset, so the check fires on the first
-        loop tick after the break — which could mean it fires immediately after resuming rather than
-        at a natural interval. Low impact, but worth adding a break-end reschedule to avoid a
-        gear-check + camera-nudge + first-action cluster all firing in the same second after resuming.
+        The interface that opens when selecting items on the Portable Workbench is currently
+        set to <code>1371</code> (same as the Woodworking Bench). Needs confirming via packet
+        capture with the Portable Workbench open in-game.
+      </div>
+    </div>
+
+    <div class="known">
+      <div class="known-title">Flatpacks — Bank Chest Name Not Confirmed</div>
+      <div class="known-desc">
+        The bank proximity scan uses <code>SceneObjectQuery.name("Bank chest")</code>.
+        The exact in-game name needs confirming — if it differs (e.g. capitalisation or
+        spacing), the scan will silently fall back to the hardcoded Fort Forinthry coords
+        every batch.
       </div>
     </div>
 
@@ -893,7 +756,7 @@
 
   <div class="footer">
     <span class="pulse"></span>
-    FORT FORINTHRY CRAFTER &nbsp;·&nbsp; DEV SESSION 2026-02-27/28 &nbsp;·&nbsp; UPDATED &nbsp;·&nbsp; BOTWITHUS API 1.0.8
+    FORT FORINTHRY CRAFTER &nbsp;·&nbsp; DEV SESSION 2026-02-27/28 &nbsp;·&nbsp; BOTWITHUS API 1.0.8
   </div>
 
 </div>
