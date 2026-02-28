@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frame Maker — Devlog</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #060a14;
+    --panel:    #0b1120;
+    --border:   #1a2a4a;
+    --gold:     #f0a030;
+    --gold2:    #ffd080;
+    --blue:     #3a8fff;
+    --blue2:    #7ab8ff;
+    --green:    #30d080;
+    --red:      #ff4a4a;
+    --orange:   #ff8c3a;
+    --muted:    #4a6080;
+    --text:     #c8d8f0;
+    --dim:      #6080a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent);
+    margin-top: 24px;
+  }
+
+  .game-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(20px, 5vw, 38px);
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(240,160,48,0.5), 0 0 60px rgba(240,160,48,0.2);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: flicker 8s infinite;
+  }
+
+  @keyframes flicker {
+    0%,96%,100% { opacity: 1; }
+    97% { opacity: 0.82; }
+    98% { opacity: 1; }
+    99% { opacity: 0.88; }
+  }
+
+  .sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--dim);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  .date-badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 16px;
+    border: 1px solid var(--blue);
+    color: var(--blue2);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    background: rgba(58,143,255,0.06);
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 14px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 40px; height: 40px;
+    background: radial-gradient(circle at top right, rgba(240,160,48,0.08), transparent);
+  }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold2);
+    margin-top: 2px;
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: 44px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ── Entry cards ── */
+  .entry {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    margin-bottom: 12px;
+    padding: 16px 20px;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .entry:hover { border-left-color: var(--gold); background: #0d1525; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .entry.fix     { border-left-color: var(--green); }
+  .entry.bug     { border-left-color: var(--red); }
+  .entry.improve { border-left-color: var(--blue); }
+  .entry.feature { border-left-color: var(--gold); }
+  .entry.pending { border-left-color: var(--orange); }
+
+  .entry-tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    border: 1px solid currentColor;
+  }
+
+  .entry.fix     .entry-tag { color: var(--green);  background: rgba(48,208,128,0.07); }
+  .entry.bug     .entry-tag { color: var(--red);    background: rgba(255,74,74,0.07); }
+  .entry.improve .entry-tag { color: var(--blue2);  background: rgba(58,143,255,0.07); }
+  .entry.feature .entry-tag { color: var(--gold);   background: rgba(240,160,48,0.07); }
+  .entry.pending .entry-tag { color: var(--orange); background: rgba(255,140,58,0.07); }
+
+  .entry-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .entry-desc {
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.55;
+  }
+
+  .entry-desc code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--gold2);
+    background: rgba(240,160,48,0.08);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  /* ── Known issues ── */
+  .known {
+    background: rgba(255,74,74,0.04);
+    border: 1px solid rgba(255,74,74,0.2);
+    border-left: 3px solid var(--red);
+    padding: 16px 20px;
+    margin-bottom: 10px;
+  }
+
+  .known-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff8080;
+    margin-bottom: 3px;
+  }
+
+  .known-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+
+  .known-desc code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: #ff9090;
+    background: rgba(255,74,74,0.08);
+    padding: 1px 5px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 64px;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .pulse {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(48,208,128,0.4); }
+    50%      { opacity: 0.7; box-shadow: 0 0 0 5px rgba(48,208,128,0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="game-title">Breezy's Frame Maker</div>
+    <div class="sub">BotWithUs Script — Development Log</div>
+    <div class="date-badge">Session — February 27, 2026 &nbsp;·&nbsp; Updated</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-label">Features</div>
+      <div class="stat-value">6</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Fixes</div>
+      <div class="stat-value" style="color: var(--green);">4</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Improvements</div>
+      <div class="stat-value">7</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Known Issues</div>
+      <div class="stat-value" style="color: var(--red);">2</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">API Version</div>
+      <div class="stat-value" style="font-size:15px; margin-top:4px;">1.0.8</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Status</div>
+      <div class="stat-value" style="font-size:13px; color: var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  FEATURES                                                               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header"><h2>Features</h2></div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Two-Mode Pipeline — Frames Only &amp; Full Pipeline</div>
+      <div class="entry-desc">
+        Supports two operational modes toggled via UI checkbox.
+        <strong>Frames Only</strong> (default): preset loads refined planks, route is
+        Bank Chest → Woodworking Bench → repeat.
+        <strong>Full Pipeline</strong>: preset loads raw logs, route is
+        Bank Chest → Sawmill (logs→planks) → Sawmill (planks→refined) → Woodworking Bench (refined→frames) → repeat.
+        Mode is shown live in the top bar and persists across Start/Stop cycles.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Auto Wood-Type Detection — Priority Ordered</div>
+      <div class="entry-desc">
+        Inventory is scanned on every preset load using <code>WoodType.detectInventory()</code>,
+        which identifies wood tier and processing stage (Logs / Planks / Refined) entirely by item name
+        — no hardcoded IDs. Priority order: Elder → Magic → Yew → Mahogany → Acadia → Maple → Teak → Willow → Oak → Wooden.
+        Current wood and stage are displayed live in the UI status bar and drive the state machine's
+        next-state resolution.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Camera Rotation — Robot Arrow Key Nudges</div>
+      <div class="entry-desc">
+        Rotates the RS3 camera every 2–5 minutes using <code>java.awt.Robot</code> arrow key presses —
+        simulates hardware-level input, safe to call at any time including during active crafting.
+        Hold duration maps to 45–90° rotation (RS3 rotates ~90°/sec with arrow keys, so 500–1000ms hold).
+        Direction alternates left/right with a 75% flip chance, 25% same-side repeat so the pattern is
+        never a rigid L-R-L-R metronome. Pre-action pause (80–250ms) and post-release settle (60–180ms)
+        mirror real human behaviour. Key is always released inside an <code>InterruptedException</code>
+        catch to prevent a permanently stuck key.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Gear Tab Check — Equipment / Skills / Backpack Idle Glance</div>
+      <div class="entry-desc">
+        Every 10–15 minutes, simulates a player glancing at their gear and skill XP.
+        Uses <code>Interfaces.dragComponents(src, dst)</code> via <code>ComponentQuery(1477).componentIndex(n)</code>
+        — works regardless of where tabs are placed on the customisable toolbar.
+        Sequence: Equipment tab (dwell 1.8–4.2s) → Skills tab → hover Construction skill component
+        (index = <code>Skills.CONSTRUCTION.getId() * 2 + 1</code>) to fire the XP tooltip → return to Backpack.
+        Fires during the main loop and also inside <code>waitForProgress</code> so it is not blocked by long crafts.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Break System — Scheduled AFK Breaks</div>
+      <div class="entry-desc">
+        Takes a 2–3 minute break every 10–20 minutes of active play (double-rolled for natural spread).
+        While on break the script idles in the loop and occasionally performs a skills-tab flick via
+        <code>Interfaces.dragComponents()</code> to simulate a player checking XP between sessions.
+        Break and timing state is displayed live in the Settings panel:
+        <code>Next break in X.X min</code> when active, <code>Break: X.X min remaining</code> when paused.
+        Break state is reset on STOP and re-seeded on START.
+      </div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Session Log — Auto-saved on Finish &amp; Stop</div>
+      <div class="entry-desc">
+        Writes a plain-text session log to
+        <code>%USERPROFILE%\BotWithUs\logs\FrameMaker_YYYY-MM-DD_HH-mm-ss.txt</code>
+        (falls back to <code>user.home</code> on non-Windows).
+        Log includes: runtime, mode, batch/plank/frame counts with hourly rates,
+        Construction level and XP gained with XP/hr, and active feature flags.
+        Saved automatically when the <code>DONE</code> state is reached and again in
+        <code>onDeactivation()</code> as a safety fallback.
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  TODAY'S LOG — FIXES                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header"><h2>Today's Log — Fixes</h2></div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">ImGui Style Bleed — PopStyleColor Loop</div>
+      <div class="entry-desc">
+        The original UI used ten back-to-back raw <code>ImGui.PopStyleColor()</code> calls at the end
+        of <code>drawSettingsPanel()</code>. Because some of those pushes lived inside conditional
+        branches (banking, break state, aggro-rotate warnings), the pop count was only correct when every
+        branch fired — any other path left the ImGui style stack mismatched, bleeding gold/blue tints onto
+        the rest of the client UI. Fixed by eliminating all deferred pop patterns: every
+        <code>PushStyleColor</code> now has a matching <code>PopStyleColor</code> in the same scope,
+        unconditionally. Conditional blocks push and pop within their own <code>if/else</code> arms.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Client Crash After 2–3 Batches — Volatile Field Torn Reads</div>
+      <div class="entry-desc">
+        The render thread was reading <code>running</code>, <code>onBreak</code>, <code>currentWood</code>,
+        and <code>currentStage</code> multiple times mid-frame while the script thread could write them
+        concurrently. This produced impossible push/pop paths on some frames and caused an eventual client
+        crash. Fixed by snapshotting all volatile fields once at the top of each draw method
+        (<code>final boolean running = script.running</code>, etc.) so the render thread works with a
+        consistent frame-start snapshot throughout.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Statistics Panel — Skill Object Double-Instantiation</div>
+      <div class="entry-desc">
+        <code>drawStatisticsPanel()</code> was calling <code>new Skill(Skills.CONSTRUCTION)</code> twice
+        per frame — once for <code>getExperience()</code> and once for <code>getLevel()</code>.
+        If the API returned different snapshots between the two calls (possible mid-tick) the XP gain
+        delta could go negative or report an incorrect level. Both calls are now combined into a single
+        <code>Skill con = new Skill(Skills.CONSTRUCTION)</code> instantiation, with both values read
+        from the same object. The whole block is wrapped in a <code>try/catch</code> so a transient
+        API failure never propagates to the render thread.
+      </div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Break Idle Tab Flick — Raw MiniMenu Replaced with dragComponents</div>
+      <div class="entry-desc">
+        The break idle flick previously used raw <code>MiniMenu.interact(ComponentAction.COMPONENT.getType(), 1, 0, TAB_SKILLS_P3)</code>
+        and <code>TAB_BACKPACK_P3</code> param3 constants. These are brittle: the param3 values are
+        tied to the exact layout of interface 1473 and break silently if Jagex changes component ordering.
+        Replaced with <code>Interfaces.dragComponents(src, dst)</code> using
+        <code>ComponentQuery(1477).componentIndex(n)</code> — matches exactly how the gear check opens
+        tabs and is resilient to toolbar customisation.
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  TODAY'S LOG — IMPROVEMENTS                                             -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header"><h2>Today's Log — Improvements</h2></div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">humanDelay — Switched to API RandomGenerator</div>
+      <div class="entry-desc">
+        The original <code>humanDelay()</code> used a custom triangular distribution over
+        <code>java.util.Random</code> with a fatigue multiplier growing over the session.
+        Replaced with the BotWithUs API's own <code>RandomGenerator.nextInt(min, max)</code>,
+        double-rolled and averaged to produce a tighter midpoint distribution without custom math.
+        This matches the pattern used in CharmCollector and ensures the RNG is the same source the
+        API uses internally — no mixing of separate seed streams.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Camera Scheduling — Double-Rolled Next Delay</div>
+      <div class="entry-desc">
+        The old <code>scheduleCameraMove()</code> did a single <code>humanDelay(120_000, 300_000)</code>
+        producing a flat uniform distribution across the full 2–5 minute window.
+        Now double-rolled and averaged: <code>(a + b) / 2</code> — identical to CharmCollector's
+        <code>handleCameraRotation</code> scheduling. This produces a smoother bell-shaped spread
+        that clusters around the 3-minute midpoint rather than treating every interval as equally likely.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">waitForProgress — Gear Check Ticked During Crafting</div>
+      <div class="entry-desc">
+        The crafting wait loop previously only ticked the camera. Now also calls <code>tickGearCheck()</code>
+        on every poll iteration so the 10–15 minute gear glance can fire mid-craft without needing to
+        wait for the main loop to resume. This prevents the gear check from building up a backlog
+        during long <code>REFINED_TO_FRAMES</code> waits (up to 90 seconds per batch).
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Mid-Craft AFK Probability — Session-Age Scaled</div>
+      <div class="entry-desc">
+        Random mid-craft micro-pauses (when <code>randomAfk</code> is enabled) now use
+        <code>RandomGenerator.nextInt(0, 10_000) &lt; (int)(afkChance * 10_000)</code> instead of
+        the old <code>java.util.Random.nextDouble()</code> comparison. The probability still scales
+        from 3% at session start to 7% after 2 hours, but the source of randomness is now the API's
+        own generator, keeping everything on a consistent RNG.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Between-Batch Pause — 8% Longer Glance-Away</div>
+      <div class="entry-desc">
+        After each completed frame batch, there is now an 8% chance of a longer 2–4 second pause
+        (vs the normal 400–900ms settle) using <code>RandomGenerator.nextInt(0, 100) &lt; 8</code>.
+        Simulates a player glancing at chat, checking XP, or briefly looking away between crafting
+        sessions. The other 92% of batches use the short settle, keeping overall throughput high.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Logout Action — Constants Extracted</div>
+      <div class="entry-desc">
+        The exit-to-lobby sequence previously used inline magic numbers in the <code>DONE</code> branch.
+        Extracted to named constants: <code>LOGOUT_MENU_P2 = 1</code>, <code>LOGOUT_MENU_P3 = 96796771</code>,
+        <code>EXIT_LOBBY_P3 = 93913157</code> — matching the same constants used in CharmCollector
+        for consistency across scripts. Both <code>ComponentAction.COMPONENT</code> interact calls
+        are now self-documenting.
+      </div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">onActivation — Gear Check Timer Seeded</div>
+      <div class="entry-desc">
+        <code>onActivation()</code> now seeds <code>nextGearCheckMs</code> to 10–15 minutes after
+        load (double-rolled). Previously the gear check timer was zero, meaning the first
+        <code>tickGearCheck()</code> call would fire immediately on the first loop tick after Start.
+        Now the first glance happens at a natural interval, just like the camera and break timers.
+        The safety-fallback session log save in <code>onDeactivation()</code> is also guarded with
+        <code>if (startTimeMs &gt; 0)</code> so it doesn't write a zero-runtime log on a cold unload.
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  KNOWN ISSUES                                                           -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header"><h2>Known Issues / To Fix</h2></div>
+
+    <div class="known">
+      <div class="known-title">Bank Chest OBJECT4 — Preset Load timing not verified live</div>
+      <div class="known-desc">
+        The preset load flow clicks the Bank Chest with <code>ObjectAction.OBJECT4</code> then waits for
+        <code>Bank::isOpen</code> and <code>!Bank::isOpen</code> in sequence. In testing this is reliable,
+        but the window between the bank closing and the preset actually populating the backpack is not
+        formally gated — <code>refreshInventory()</code> fires immediately after the close delay.
+        If the preset is slow to apply, <code>currentWood</code> could be null on the first check,
+        sending the state machine to <code>DONE</code> prematurely. A short
+        <code>Execution.delayUntil</code> polling for a non-null inventory scan would be more robust.
+      </div>
+    </div>
+
+    <div class="known">
+      <div class="known-title">Gear check fires during break — skipped silently</div>
+      <div class="known-desc">
+        <code>tickBreak()</code> returns early before <code>tickGearCheck()</code> is called in the
+        main loop, so if a gear check becomes due while the script is on break, it won't fire until
+        the break ends. <code>nextGearCheckMs</code> is not reset, so the check fires on the first
+        loop tick after the break — which could mean it fires immediately after resuming rather than
+        at a natural interval. Low impact, but worth adding a break-end reschedule to avoid a
+        gear-check + camera-nudge + first-action cluster all firing in the same second after resuming.
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="footer">
+    <span class="pulse"></span>
+    BREEZY'S FRAME MAKER &nbsp;·&nbsp; DEV SESSION 2026-02-27 &nbsp;·&nbsp; UPDATED &nbsp;·&nbsp; BOTWITHUS API 1.0.8
+  </div>
+
+</div>
+</body>
+</html>
