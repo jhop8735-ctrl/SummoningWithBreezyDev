@@ -21,259 +21,45 @@
     --text:  #c8d8f0;
     --dim:   #6080a0;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
-    pointer-events: none;
-    z-index: 999;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px); pointer-events: none; z-index: 999; }
   .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
-
   .header { text-align: center; margin-bottom: 56px; }
-  .header::after {
-    content: '';
-    display: block;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent);
-    margin-top: 24px;
-  }
-
-  .game-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(20px, 5vw, 38px);
-    font-weight: 900;
-    color: var(--gold);
-    text-shadow: 0 0 30px rgba(240,160,48,0.5), 0 0 60px rgba(240,160,48,0.2);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    animation: flicker 8s infinite;
-  }
-
-  @keyframes flicker {
-    0%,96%,100% { opacity: 1; }
-    97% { opacity: 0.82; }
-    98% { opacity: 1; }
-    99% { opacity: 0.88; }
-  }
-
-  .sub {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    color: var(--dim);
-    letter-spacing: 3px;
-    margin-top: 8px;
-    text-transform: uppercase;
-  }
-
-  .date-badge {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 4px 16px;
-    border: 1px solid var(--blue);
-    color: var(--blue2);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 2px;
-    background: rgba(58,143,255,0.06);
-  }
-
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    margin-bottom: 48px;
-  }
-
-  .stat {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-top: 2px solid var(--gold);
-    padding: 14px 18px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 40px; height: 40px;
-    background: radial-gradient(circle at top right, rgba(240,160,48,0.08), transparent);
-  }
-
-  .stat-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .stat-value {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold2);
-    margin-top: 2px;
-  }
-
+  .header::after { content: ''; display: block; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent); margin-top: 24px; }
+  .game-title { font-family: 'Orbitron', sans-serif; font-size: clamp(20px, 5vw, 38px); font-weight: 900; color: var(--gold); text-shadow: 0 0 30px rgba(240,160,48,0.5), 0 0 60px rgba(240,160,48,0.2); letter-spacing: 4px; text-transform: uppercase; animation: flicker 8s infinite; }
+  @keyframes flicker { 0%,96%,100% { opacity: 1; } 97% { opacity: 0.82; } 98% { opacity: 1; } 99% { opacity: 0.88; } }
+  .sub { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--dim); letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; }
+  .date-badge { display: inline-block; margin-top: 14px; padding: 4px 16px; border: 1px solid var(--blue); color: var(--blue2); font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 2px; background: rgba(58,143,255,0.06); }
+  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 48px; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-top: 2px solid var(--gold); padding: 14px 18px; position: relative; overflow: hidden; }
+  .stat::before { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 40px; background: radial-gradient(circle at top right, rgba(240,160,48,0.08), transparent); }
+  .stat-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; }
+  .stat-value { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold2); margin-top: 2px; }
   .section { margin-bottom: 44px; }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .section-header h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--blue2);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .section-header::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-
-  .entry {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--blue);
-    margin-bottom: 12px;
-    padding: 16px 20px;
-    transition: border-color 0.2s, background 0.2s;
-    animation: slideIn 0.4s ease both;
-  }
-
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-header h2 { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--blue2); letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; }
+  .section-header::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  .entry { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--blue); margin-bottom: 12px; padding: 16px 20px; transition: border-color 0.2s, background 0.2s; animation: slideIn 0.4s ease both; }
   .entry:hover { border-left-color: var(--gold); background: #0d1525; }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
   .entry.fix     { border-left-color: var(--green); }
   .entry.improve { border-left-color: var(--blue); }
   .entry.feature { border-left-color: var(--gold); }
-  .entry.pending { border-left-color: var(--orange); }
-
-  .entry-tag {
-    display: inline-block;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    padding: 2px 8px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    border: 1px solid currentColor;
-  }
-
+  .entry-tag { display: inline-block; font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; border: 1px solid currentColor; }
   .entry.fix     .entry-tag { color: var(--green);  background: rgba(48,208,128,0.07); }
   .entry.improve .entry-tag { color: var(--blue2);  background: rgba(58,143,255,0.07); }
   .entry.feature .entry-tag { color: var(--gold);   background: rgba(240,160,48,0.07); }
-  .entry.pending .entry-tag { color: var(--orange); background: rgba(255,140,58,0.07); }
-
-  .entry-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-    line-height: 1.3;
-  }
-
-  .entry-desc {
-    font-size: 15px;
-    color: #8fb8d8;
-    line-height: 1.6;
-  }
-
-  .entry-desc code {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    color: var(--gold2);
-    background: rgba(240,160,48,0.08);
-    padding: 1px 5px;
-    border-radius: 2px;
-  }
-
-  .known {
-    background: rgba(255,74,74,0.04);
-    border: 1px solid rgba(255,74,74,0.2);
-    border-left: 3px solid var(--red);
-    padding: 16px 20px;
-    margin-bottom: 10px;
-  }
-
-  .known-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #ff8080;
-    margin-bottom: 3px;
-  }
-
-  .known-desc {
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.5;
-  }
-
-  .known-desc code {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    color: #ff9090;
-    background: rgba(255,74,74,0.08);
-    padding: 1px 5px;
-  }
-
-  .footer {
-    margin-top: 64px;
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
-  }
-
-  .pulse {
-    display: inline-block;
-    width: 7px; height: 7px;
-    background: var(--green);
-    border-radius: 50%;
-    margin-right: 8px;
-    animation: pulse 2s infinite;
-    vertical-align: middle;
-  }
-
-  @keyframes pulse {
-    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(48,208,128,0.4); }
-    50%      { opacity: 0.7; box-shadow: 0 0 0 5px rgba(48,208,128,0); }
-  }
+  .entry-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+  .entry-desc { font-size: 15px; color: #8fb8d8; line-height: 1.6; }
+  .entry-desc code { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--gold2); background: rgba(240,160,48,0.08); padding: 1px 5px; border-radius: 2px; }
+  .known { background: rgba(255,74,74,0.04); border: 1px solid rgba(255,74,74,0.2); border-left: 3px solid var(--red); padding: 16px 20px; margin-bottom: 10px; }
+  .known-title { font-size: 15px; font-weight: 700; color: #ff8080; margin-bottom: 3px; }
+  .known-desc { font-size: 13px; color: var(--dim); line-height: 1.5; }
+  .known-desc code { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #ff9090; background: rgba(255,74,74,0.08); padding: 1px 5px; }
+  .footer { margin-top: 64px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .pulse { display: inline-block; width: 7px; height: 7px; background: var(--green); border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite; vertical-align: middle; }
+  @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(48,208,128,0.4); } 50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(48,208,128,0); } }
 </style>
 </head>
 <body>
@@ -286,32 +72,13 @@
   </div>
 
   <div class="stats-bar">
-    <div class="stat">
-      <div class="stat-label">Features</div>
-      <div class="stat-value">13</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Fixes</div>
-      <div class="stat-value" style="color:var(--green);">12</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Improvements</div>
-      <div class="stat-value">11</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Known Issues</div>
-      <div class="stat-value" style="color:var(--red);">3</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">API Version</div>
-      <div class="stat-value" style="font-size:15px; margin-top:4px;">1.0.8</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Status</div>
-      <div class="stat-value" style="font-size:13px; color:var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div>
-    </div>
+    <div class="stat"><div class="stat-label">Features</div><div class="stat-value">15</div></div>
+    <div class="stat"><div class="stat-label">Fixes</div><div class="stat-value" style="color:var(--green);">16</div></div>
+    <div class="stat"><div class="stat-label">Improvements</div><div class="stat-value">13</div></div>
+    <div class="stat"><div class="stat-label">Known Issues</div><div class="stat-value" style="color:var(--red);">1</div></div>
+    <div class="stat"><div class="stat-label">API Version</div><div class="stat-value" style="font-size:15px; margin-top:4px;">1.0.8</div></div>
+    <div class="stat"><div class="stat-label">Status</div><div class="stat-value" style="font-size:13px; color:var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div></div>
   </div>
-
 
   <!-- FEATURES -->
   <div class="section">
@@ -320,153 +87,94 @@
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Frames Pipeline — Multiple Modes</div>
-      <div class="entry-desc">
-        Five pipeline modes selectable from a UI dropdown.
-        <strong>Refined to Frames</strong> (Workbench only) is the default.
-        Full options run from raw logs all the way through Sawmill → Woodworking Bench.
-        All object and interface interactions use confirmed packet values — no hardcoded
-        coords anywhere in the pipeline.
-      </div>
+      <div class="entry-desc">Five pipeline modes selectable from a UI dropdown: Refined to Frames, Planks to Refined to Frames, Logs to Planks, Logs to Refined to Frames, and Full Pipeline. All interactions use confirmed packet values. <code>REFINED_TO_FRAMES</code> and <code>LOGS_TO_PLANKS</code> confirmed working in-game.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">Flatpacks Sub-Module — Portable Workbench</div>
-      <div class="entry-desc">
-        Dedicated <code>FlatpacksScript</code> module for crafting flatpack furniture.
-        Route per batch: deposit → load preset → locate workbench → open interface →
-        select room → select item → construct → wait → repeat.
-        All 14 confirmed furniture types across Parlour, Kitchen, and Dining Room
-        are defined in <code>FlatpackType</code> with confirmed room p2 values and item indices.
-      </div>
+      <div class="entry-title">Flatpacks Module — Confirmed Working at Fort Forinthry</div>
+      <div class="entry-desc">Dedicated <code>FlatpacksScript</code> module for crafting flatpack furniture on a Portable Workbench. Route per batch: load preset (OBJECT4) to locate workbench to open interface to construct and repeat. Deposit step removed — the workbench consumes planks directly. Room and item selection fire only on the first batch or on type change. Tested and confirmed working with Mahogany table at Fort Forinthry. 14 furniture types across Parlour, Kitchen, and Dining Room defined in <code>FlatpackType</code>.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Flatpacks — Smart Selection Memory</div>
+      <div class="entry-desc">Room dropdown and item selection only fire on the first batch or when the selected flatpack type changes between batches. Batch 2+ opens the workbench and goes straight to Construct. Tracked via <code>roomSelected</code>, <code>itemSelected</code>, and <code>lastSelectedType</code> — all reset on Start.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Flatpacks — Full Human Behaviour Parity with Frames</div>
+      <div class="entry-desc">Break system, camera rotation, camera zoom, and gear tab checks all fire during the flatpacks loop. <code>tickBreak()</code> and <code>tickZoom()</code> called at the top of every tick. <code>tickCamera()</code> and <code>tickGearCheck()</code> ticked inside <code>waitForProgress</code>. Between-batch pause has the same 8% glance-away chance as frames.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Low Stock Exit — Auto-Finish on Partial Preset</div>
+      <div class="entry-desc">After every preset load, total backpack item count is checked via <code>countBackpackTotal()</code>. If fewer than 12 items were loaded, <code>finishedNormally</code> is set and the script finishes cleanly after the current batch. Works for both frames and flatpacks. Exit to Lobby fires as normal on the clean finish.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Dynamic Workbench Detection — Name Scan, No Coords</div>
-      <div class="entry-desc">
-        The Portable Workbench is player-deployed and can be placed anywhere, so its
-        coordinates are never hardcoded. <code>findWorkbench()</code> runs a fresh
-        <code>SceneObjectQuery.name("Portable workbench")</code> scan within 7 tiles before
-        every batch — name-based rather than ID-based since the object ID can differ by location.
-        The live <code>x/y</code> from the scan result are used directly in the
-        <code>MiniMenu.interact()</code> call. If no object is found, a second pass tries
-        <code>NpcQuery.name("Portable workbench")</code> to handle the Grand Exchange variant
-        where it spawns as an NPC rather than a placed object.
-      </div>
+      <div class="entry-desc"><code>findWorkbench()</code> scans within 7 tiles using <code>SceneObjectQuery.name("Portable workbench")</code> before every batch. Falls back to <code>NpcQuery</code> for the Grand Exchange variant where the workbench spawns as an NPC. Live coords used directly in <code>MiniMenu.interact()</code>.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Dynamic Bank Detection — Name Scan with Fallback</div>
-      <div class="entry-desc">
-        Both deposit and preset-load steps scan for a nearby bank chest by name
-        (<code>SceneObjectQuery.name("Bank chest")</code>) within 7 tiles before acting.
-        The live coords from the scan result are passed directly — nothing is hardcoded.
-        Falls back to the confirmed Fort Forinthry chest as a safety net only if no chest
-        is found nearby.
-      </div>
+      <div class="entry-desc">Preset load scans for a nearby bank chest by name within 7 tiles. Falls back to confirmed Fort Forinthry chest (ID 125239, coords 3283/3555) if none found. Confirmed: bank chest name is exactly <code>"Bank chest"</code>, ID 125239.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Auto Wood-Type Detection — Priority Ordered by Name</div>
-      <div class="entry-desc">
-        Inventory is scanned on every preset load using <code>WoodType.detectInventory()</code>,
-        identifying wood tier and processing stage (Logs / Planks / Refined) entirely by item name —
-        no hardcoded IDs. Priority: Elder → Magic → Yew → Mahogany → Acadia → Maple → Teak → Willow → Oak → Wooden.
-        Drives the state machine's next-state resolution and is shown live in the UI.
-      </div>
+      <div class="entry-desc">Inventory scanned on every preset load using <code>WoodType.detectInventory()</code>. Identifies tier and stage (Logs / Planks / Refined) by item name — no hardcoded IDs. Priority: Elder to Wooden. Drives state machine routing and shown live in the top bar.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Camera Rotation — A/D Nudges via BWU API</div>
-      <div class="entry-desc">
-        Rotates the camera every 2–5 minutes using <code>KeyboardInput.pressKey()</code> on
-        <code>A</code>/<code>D</code> — through BWU's own input layer, no <code>java.awt</code>.
-        1 tap (72°) 90% of the time, 2 taps (144°) 10% — subtle glances only, never a spin.
-        Direction alternates with a 75% flip chance.
-      </div>
+      <div class="entry-desc">Rotates camera every 2–5 minutes via <code>KeyboardInput.pressKey()</code> on A/D. 1 tap (72 degrees) 90% of the time, 2 taps (144 degrees) 10%. Direction alternates with 75% flip chance. Interval uses a single flat <code>humanDelayWide</code> roll — no bell-curve averaging.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Camera Zoom — Insert / Delete Key Taps</div>
-      <div class="entry-desc">
-        <code>tickZoom()</code> fires every 15–40 minutes and taps <code>Insert</code> (zoom in)
-        or <code>Delete</code> (zoom out) 1–4 times via <code>KeyboardInput.pressKey()</code>.
-        Scheduled and reset on Start alongside camera rotation.
-      </div>
+      <div class="entry-desc"><code>tickZoom()</code> fires every 15–40 minutes, tapping Insert or Delete 1–4 times. Single flat <code>humanDelayWide</code> roll for interval scheduling.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Gear Tab Check — Equipment / Skills / Backpack Idle Glance</div>
-      <div class="entry-desc">
-        Every 10–15 minutes, simulates a player glancing at gear and skill XP.
-        Uses <code>Interfaces.dragComponents()</code> via option-based <code>ComponentQuery</code>
-        — resilient to toolbar rearrangement. Sequence: Equipment → Skills → hover Construction
-        XP tooltip → return to Backpack. Fires during both the main loop and inside
-        <code>waitForProgress</code> so long crafts don't block it.
-      </div>
+      <div class="entry-desc">Every 10–15 minutes: opens Equipment tab, dwells, opens Skills tab, hovers Construction XP tooltip, returns to Backpack. Uses option-based <code>ComponentQuery</code> — resilient to toolbar rearrangement. Fires inside <code>waitForProgress</code> so long crafts do not block it.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Break System — Scheduled AFK Breaks with Session Fatigue</div>
-      <div class="entry-desc">
-        Takes a 4–7 min break every 10–20 minutes. Break intervals shrink as the session ages
-        (fatigue factor decays 1.0 → 0.5 over 3 hours). After 1 hour, a 5% fat-tail chance can
-        extend a break to 7–28 minutes. While idle, occasionally flicks to the Skills tab.
-        Break state and countdown shown live in the Settings panel.
-      </div>
+      <div class="entry-desc">Breaks every 10–20 minutes, duration 4–7 minutes. Intervals shrink as session ages (fatigue 1.0 to 0.5 over 3 hours). After 1 hour, 5% fat-tail chance of a 7–28 minute break. During breaks occasionally flicks to Skills tab. Countdown shown live in Settings panel.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Post-Login Warm-Up — Extra-Long First Batch Delays</div>
-      <div class="entry-desc">
-        The first batch after Start gets 4–9 s of warm-up settle time with a 40% chance of
-        a second 2–5 s distraction pause, simulating a player reading chat or tabbing back in.
-        Reset on each Start press.
-      </div>
+      <div class="entry-desc">First batch after Start gets 4–9 s warm-up with 40% chance of a second 2–5 s distraction pause. Simulates a player reading chat or tabbing back in. Reset on each Start press.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
       <div class="entry-title">GE Price Tracking — Live Wiki Fetch</div>
-      <div class="entry-desc">
-        A daemon thread fetches the RS Wiki's live GE price JSON on load. After each frame batch,
-        profit is calculated as <code>(framePrice − logPrice) × framesThisBatch</code>.
-        Statistics panel shows log price, frame price, per-item margin, total profit, and profit/hr.
-      </div>
+      <div class="entry-desc">Daemon thread fetches RS Wiki live GE price JSON on load. After each frame batch, profit is calculated as (frame price - log price) x frames made. Statistics panel shows log price, frame price, per-item margin, total profit, and profit/hr.</div>
     </div>
 
     <div class="entry feature">
       <div class="entry-tag">Feature</div>
-      <div class="entry-title">Session Log — Auto-saved on Finish &amp; Stop</div>
-      <div class="entry-desc">
-        Writes a plain-text log to
-        <code>%USERPROFILE%\BotWithUs\logs\FortForinthryCrafter_YYYY-MM-DD_HH-mm-ss.txt</code>.
-        Includes runtime, mode, batch counts with hourly rates, Construction XP gained,
-        active flags, and flatpacks stats when applicable. Saved on <code>DONE</code> and
-        again in <code>onDeactivation()</code> as a safety fallback (guarded with
-        <code>if (startTimeMs &gt; 0)</code> to avoid zero-runtime logs on cold unload).
-      </div>
-    </div>
-
-    <div class="entry feature">
-      <div class="entry-tag">Feature</div>
-      <div class="entry-title">Rename — Breezy's Frame Maker → Fort Forinthry Crafter</div>
-      <div class="entry-desc">
-        Full rename across all source files, console prefixes, log file names, class names,
-        UI labels, and <code>script.ini</code>.
-      </div>
+      <div class="entry-title">Session Log — Auto-saved on Finish and Stop</div>
+      <div class="entry-desc">Writes plain-text log to <code>%USERPROFILE%\BotWithUs\logs\FortForinthryCrafter_YYYY-MM-DD_HH-mm-ss.txt</code>. Includes runtime, mode, batch counts, XP gained, flatpacks stats when applicable. Saved on <code>DONE</code> and again in <code>onDeactivation()</code> as a safety fallback.</div>
     </div>
 
   </div>
-
 
   <!-- FIXES -->
   <div class="section">
@@ -474,129 +182,101 @@
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">Compile Error — WORKBENCH_X / WORKBENCH_Y Missing Constants</div>
-      <div class="entry-desc">
-        <code>FlatpacksScript</code> referenced <code>FlatpackType.WORKBENCH_X/Y</code> which
-        were never defined — the Portable Workbench is player-deployed so static coords are
-        meaningless. Removed the constant references entirely and replaced with live coordinate
-        extraction from the scene query result each batch.
-      </div>
+      <div class="entry-title">Flatpacks — Deposit Loop Running Forever</div>
+      <div class="entry-desc">After crafting, the script attempted to open the bank with OBJECT1 before loading the next preset. The workbench consumes planks directly so there is nothing to deposit. The entire DEPOSIT state was removed. Loop is now: LOAD_PRESET to MAKE_FLATPACKS to LOAD_PRESET.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">Compile Error — Wrong SceneObject Import Package</div>
-      <div class="entry-desc">
-        <code>FlatpacksScript</code> imported <code>entities.objects.SceneObject</code> (plural)
-        but the API path is <code>entities.object.SceneObject</code> (singular).
-      </div>
+      <div class="entry-title">Flatpacks — Batch Count Always Zero</div>
+      <div class="entry-desc"><code>countOutput()</code> matched by <code>itemName</code> which included the <code>(flatpack)</code> suffix — the in-game item name does not. Replaced with a pre-craft snapshot of <code>craftableCount()</code> (planks in pack divided by planks needed). <code>countOutput()</code> removed entirely.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">Compile Error — Missing Backpack Import</div>
-      <div class="entry-desc">
-        <code>countOutput()</code> called <code>Backpack.container()</code> but
-        <code>net.botwithus.rs3.game.inventories.Backpack</code> was never imported.
-      </div>
+      <div class="entry-title">Flatpacks — Item Names Included "(flatpack)" Suffix</div>
+      <div class="entry-desc">All 14 <code>itemName</code> values in <code>FlatpackType</code> included <code>(flatpack)</code> which does not match the actual in-game item name. Stripped from all entries. <code>displayName</code> retains the suffix for the UI combo box.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
-      <div class="entry-title">Compile Error — Class Name / File Name Mismatch</div>
-      <div class="entry-desc">
-        Class renamed to <code>FortForinthryCrafter</code> but the file on disk was still
-        <code>BreezysFrameMaker.java</code>. Java requires the public class name to match the
-        filename. <code>build.gradle.kts</code> updated to produce <code>FortForinthryCrafter.jar</code>.
-      </div>
+      <div class="entry-title">Flatpacks — Room and Item Selected Every Batch</div>
+      <div class="entry-desc">The workbench remembers the last room and item selection between batches. Selecting them on every loop was unnecessary and created a detectable fixed-action sequence. Both now fire only on the first batch, or when the flatpack type changes between batches.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Flatpacks — Top Bar Showing "Stage: UNKNOWN"</div>
+      <div class="entry-desc"><code>currentStage</code> is only updated during the frames pipeline and stays at <code>UNKNOWN</code> in flatpacks mode. Top bar now branches on mode: flatpacks-only shows flatpack type and <code>FlatpackState</code>; frames mode shows wood type and pipeline stage as before.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Flatpacks — No Break, Camera, Zoom or Gear Check While Running</div>
+      <div class="entry-desc">The flatpacks loop bypassed all human behaviour systems. <code>tickBreak()</code> and <code>tickZoom()</code> now called at the top of every tick. <code>tickCamera()</code> and <code>tickGearCheck()</code> ticked inside <code>waitForProgress</code>. Required making those four methods package-private in <code>FortForinthryCrafter</code>.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Double-Roll Averaging on All Scheduled Timers</div>
+      <div class="entry-desc">Camera rotation, gear check, zoom, and break timers all used <code>(a + b) / 2</code> double-roll averaging which produces a bell curve peaking at the midpoint. All replaced with a single <code>humanDelayWide</code> roll for a true flat distribution.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — waitForProgress Fixed Heartbeat</div>
+      <div class="entry-desc">The crafting poll loop used <code>humanDelay(300, 700)</code> — a tight range producing a consistent timing signature. Replaced with <code>humanDelayWide(300, 900)</code> in both frames and flatpacks so the poll interval has occasional long silences.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Identical Inter-Action Delays in Workbench Selection</div>
+      <div class="entry-desc">All three workbench selection steps used the same <code>randomDriftDelay(180, 450)</code> range. Each step now has its own distinct range: 200–550 ms, 150–500 ms, and 120–480 ms respectively, with matching varied post-action delays.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Break Interval Floor Spike at 5 Minutes</div>
+      <div class="entry-desc"><code>scheduleNextBreak()</code> used <code>Math.max(5 * 60_000, ...)</code> which clamped any roll below 5 minutes to exactly 5 minutes, creating a detectable spike in the break interval distribution. The floor removed.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Hover Hesitation Check Always Firing</div>
+      <div class="entry-desc"><code>clickConstruct()</code> used <code>humanDelay(0, 100) &lt; 5</code> to simulate a 5% hover hesitation. <code>humanDelay</code> returns milliseconds so the condition was almost always true. Replaced with <code>RandomGenerator.nextInt(0, 100) &lt; 5</code>.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">LOGS_TO_PLANKS — Hardcoded State Transition</div>
-      <div class="entry-desc">
-        The <code>LOGS_TO_PLANKS</code> case always continued to <code>PLANKS_TO_REFINED</code>
-        regardless of the selected pipeline mode. Now checks <code>pipelineMode</code> and routes
-        to <code>LOAD_PRESET</code> (bank and repeat) when the mode is <code>LOGS_TO_PLANKS</code>.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">PipelineMode Labels — Unicode Arrows Rendered as "?"</div>
-      <div class="entry-desc">
-        Enum labels used <code>→</code> Unicode arrows passed directly into <code>ImGui.Combo()</code>.
-        BWU ImGui does not render non-ASCII — every label showed as "?". Replaced all arrows
-        with ASCII <code>"to"</code>.
-      </div>
+      <div class="entry-desc">Always continued to <code>PLANKS_TO_REFINED</code> regardless of selected pipeline mode. Now checks <code>pipelineMode</code> and routes to <code>LOAD_PRESET</code> when mode is <code>LOGS_TO_PLANKS</code>.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">ImGui Style Bleed — Mismatched Push/Pop Counts</div>
-      <div class="entry-desc">
-        Deferred <code>PopStyleColor</code> calls were only correct when every conditional branch
-        fired, leaving the style stack unbalanced on other paths and bleeding tints onto the
-        rest of the client UI. Every <code>PushStyleColor</code> now has a matching pop in the
-        same scope, unconditionally.
-      </div>
+      <div class="entry-desc">Deferred <code>PopStyleColor</code> calls were only correct when every conditional branch fired, bleeding tints onto the rest of the client UI. Every push now has a matching pop in the same scope, unconditionally.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">Client Crash After 2–3 Batches — Volatile Field Torn Reads</div>
-      <div class="entry-desc">
-        The render thread read <code>running</code>, <code>onBreak</code>, <code>currentWood</code>,
-        and <code>currentStage</code> multiple times mid-frame while the script thread could write
-        them concurrently, eventually crashing the client. Fixed by snapshotting all volatile
-        fields once at the top of each draw method.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Statistics Panel — Skill Object Double-Instantiation</div>
-      <div class="entry-desc">
-        <code>drawStatisticsPanel()</code> called <code>new Skill(Skills.CONSTRUCTION)</code>
-        twice per frame — different snapshots between calls could make XP gain go negative.
-        Combined into a single instantiation, wrapped in <code>try/catch</code>.
-      </div>
-    </div>
-
-    <div class="entry fix">
-      <div class="entry-tag">Fix</div>
-      <div class="entry-title">Gson Bundled in includeInJar — Script Failed to Load</div>
-      <div class="entry-desc">
-        Bundling Gson into the output jar caused a duplicate class conflict since the BWU client
-        already ships it. Fixed by keeping Gson in <code>implementation</code> only — the client
-        provides it at runtime.
-      </div>
+      <div class="entry-desc">Render thread read volatile fields multiple times mid-frame while the script thread could write them. Fixed by snapshotting all volatile fields once at the top of each draw method.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">Break Scheduled on Load — Countdown Before Start</div>
-      <div class="entry-desc">
-        <code>onActivation()</code> called <code>scheduleNextBreak()</code>, printing a break
-        countdown before Start was clicked and counting settings-panel time against the first
-        break interval. Removed from activation — now only fires from the Start button.
-        <code>nextBreakAfterMs</code> initialised to <code>Long.MAX_VALUE</code> as a guard.
-      </div>
+      <div class="entry-desc"><code>onActivation()</code> called <code>scheduleNextBreak()</code>, counting settings-panel idle time against the first break interval. Removed from activation — fires only from Start. <code>nextBreakAfterMs</code> initialised to <code>Long.MAX_VALUE</code> as a guard.</div>
     </div>
 
     <div class="entry fix">
       <div class="entry-tag">Fix</div>
       <div class="entry-title">Camera Rotation — Removed java.awt.Robot</div>
-      <div class="entry-desc">
-        Camera rotation used <code>java.awt.Robot.keyPress()</code> — OS-level synthetic input
-        that bypasses the game's input layer and is a known ban signal. Replaced entirely with
-        <code>KeyboardInput.pressKey()</code> on <code>A</code>/<code>D</code>.
-        All <code>java.awt</code> references removed from the file.
-      </div>
+      <div class="entry-desc">Camera rotation used <code>java.awt.Robot.keyPress()</code> — OS-level synthetic input that bypasses the game's input layer and is a known ban signal. Replaced with <code>KeyboardInput.pressKey()</code> on A/D. All <code>java.awt</code> references removed.</div>
     </div>
 
   </div>
-
 
   <!-- IMPROVEMENTS -->
   <div class="section">
@@ -604,155 +284,98 @@
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
+      <div class="entry-title">Flatpack Count — Pre-Craft Snapshot Instead of Post-Craft Scan</div>
+      <div class="entry-desc">Count taken before crafting via <code>craftableCount()</code> (planks in pack divided by planks needed). Avoids dependency on exact in-game item names and correctly handles flatpacks from previous batches still in the backpack.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
       <div class="entry-title">humanDelay — True Flat Distribution with Fat-Tail Variant</div>
-      <div class="entry-desc">
-        Replaced the double-rolled average <code>(a + b) / 2</code> (which clusters near the
-        midpoint) with a single <code>RandomGenerator.nextInt()</code> — every value in the range
-        equally likely. Added <code>humanDelayWide()</code> with a 5% fat-tail chance of a
-        2–4× pause simulating a glance away. <code>driftDelay()</code> delegates to
-        <code>humanDelayWide</code> and additionally widens its range up to 2× over the first
-        2 hours of a session.
-      </div>
+      <div class="entry-desc">Replaced double-rolled average <code>(a + b) / 2</code> with a single <code>RandomGenerator.nextInt()</code>. Added <code>humanDelayWide()</code> with 5% fat-tail chance of a 2–4x pause. <code>driftDelay()</code> widens range up to 2x over the first 2 hours of a session.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Pipeline Failsafe — One Retry Then Reset to LOAD_PRESET</div>
-      <div class="entry-desc">
-        All pipeline states use a shared <code>failStep()</code> helper when they detect the
-        wrong inventory stage. First failure: waits 1.8–2.8 s and retries (handles lag misses).
-        Second failure: resets to <code>LOAD_PRESET</code> for a clean reload.
-        <code>craftRetries</code> is cleared on every successful state entry and on Start.
-      </div>
+      <div class="entry-desc">All pipeline states use a shared <code>failStep()</code> helper on wrong inventory stage. First failure: waits and retries. Second failure: resets to <code>LOAD_PRESET</code>. <code>craftRetries</code> cleared on every successful state entry and on Start.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Preset Inventory Gate — Poll Before Reading Stage</div>
-      <div class="entry-desc">
-        After the bank closes post-preset, the code now polls for up to 4 seconds for
-        <code>hasPlanks()</code> / <code>detectInventory()</code> to return a valid result
-        before reading the current stage. Previously a blind fixed delay could read an empty
-        backpack and send the state machine to <code>DONE</code> prematurely on a slow server.
-      </div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
-      <div class="entry-title">waitForProgress — Gear Check and Camera Ticked During Crafting</div>
-      <div class="entry-desc">
-        The crafting wait loop now calls <code>tickGearCheck()</code> and <code>tickCamera()</code>
-        on every poll iteration. Prevents either timer building up a backlog during long
-        <code>REFINED_TO_FRAMES</code> waits (up to 90 s per batch).
-      </div>
+      <div class="entry-desc">After bank closes post-preset, polls up to 4 seconds for <code>detectInventory()</code> to return a valid result before reading stage. Prevents premature <code>DONE</code> on slow servers.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Mid-Craft AFK — Session-Age Scaled Probability</div>
-      <div class="entry-desc">
-        Random mid-craft micro-pauses (when <code>randomAfk</code> is enabled) scale from 3%
-        at session start to 7% after 2 hours. Only fires at the Woodworking Bench — disabled
-        at the Sawmill where a pause would consume output before it can be scanned.
-      </div>
+      <div class="entry-desc">Mid-craft micro-pauses scale from 3% at session start to 7% after 2 hours. Only fires at the Woodworking Bench — disabled at the Sawmill.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Between-Batch Pause — 8% Longer Glance-Away</div>
-      <div class="entry-desc">
-        After each completed batch there is an 8% chance of a 2–4 s pause instead of the
-        normal 400–900 ms settle, simulating a player glancing at chat or checking XP.
-      </div>
+      <div class="entry-desc">After each completed batch, 8% chance of a 2–4 s pause instead of the normal 400–900 ms settle. Applied to both frames and flatpacks pipelines.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Long Breaks Gated Behind 1 Hour Session Time</div>
-      <div class="entry-desc">
-        The fat-tail 7–28 min break (5% chance) only activates after 1 hour of total session
-        time. Under 1 hour all breaks are 4–7 min. A distinct log line flags long breaks.
-      </div>
+      <div class="entry-desc">Fat-tail 7–28 min break only activates after 1 hour of total session time. Under 1 hour all breaks are 4–7 min.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Break Resume — Camera and Gear Timers Rescheduled</div>
-      <div class="entry-desc">
-        On break end, <code>nextCameraMoveMs</code> and <code>nextGearCheckMs</code> are pushed
-        forward from the current time, preventing a cluster of gear check + camera nudge +
-        first action all firing in the same second after resuming.
-      </div>
+      <div class="entry-desc">On break end, <code>nextCameraMoveMs</code> and <code>nextGearCheckMs</code> are pushed forward from current time, preventing a cluster of actions firing immediately after resuming.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Tab Check — Option-Based Lookup, Not Hardcoded Indices</div>
-      <div class="entry-desc">
-        Replaced hardcoded component slot indices with
-        <code>ComponentQuery(1477).option("Equipment").hidden(false)</code> (and similarly for
-        Skills / Backpack). The <code>hidden(false)</code> filter skips missing tabs silently.
-        Resilient to toolbar rearrangement.
-      </div>
+      <div class="entry-desc">Replaced hardcoded component slot indices with <code>ComponentQuery(1477).option("Equipment").hidden(false)</code>. Resilient to toolbar rearrangement.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">LOAD_PRESET Settle — Drift Delay with Session Age</div>
+      <div class="entry-desc">Flatpacks LOAD_PRESET settle changed from <code>randomDriftDelay</code> to <code>driftDelay</code> so the pause naturally widens over a long session, matching frames behaviour.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">countBackpackTotal — Shared Helper for Low Stock Detection</div>
+      <div class="entry-desc">New package-private method on <code>FortForinthryCrafter</code> counts all items across every backpack slot. Used by both pipelines after preset load to detect partial final batches.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">onActivation — Gear Check Timer Seeded at Natural Interval</div>
-      <div class="entry-desc">
-        <code>nextGearCheckMs</code> is now seeded to 10–15 minutes after load.
-        Previously it was zero so the first gear check fired immediately on the first loop tick.
-      </div>
+      <div class="entry-desc"><code>nextGearCheckMs</code> seeded to 10–15 minutes after load using a single flat roll. Previously zero so the first gear check fired immediately on the first loop tick.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
       <div class="entry-title">Logout Action — Magic Numbers Extracted to Constants</div>
-      <div class="entry-desc">
-        The exit-to-lobby sequence used inline magic numbers in the <code>DONE</code> branch.
-        Extracted to named constants: <code>LOGOUT_MENU_P2</code>, <code>LOGOUT_MENU_P3</code>,
-        <code>EXIT_LOBBY_P3</code> — self-documenting and consistent with other scripts.
-      </div>
+      <div class="entry-desc">Exit-to-lobby sequence extracted to named constants: <code>LOGOUT_MENU_P2</code>, <code>LOGOUT_MENU_P3</code>, <code>EXIT_LOBBY_P3</code>.</div>
     </div>
 
   </div>
-
 
   <!-- KNOWN ISSUES -->
   <div class="section">
     <div class="section-header"><h2>Known Issues</h2></div>
 
     <div class="known">
-      <div class="known-title">Flatpacks — GE NPC Name and Action Slot Not Confirmed</div>
+      <div class="known-title">Flatpacks — Grand Exchange Portable Workbench Not Tested</div>
       <div class="known-desc">
         The GE variant of the Portable Workbench is assumed to spawn as an NPC named
         <code>"Portable workbench"</code> responding to <code>NPCAction.NPC1</code>.
-        Both need confirming via packet capture at the Grand Exchange before the GE path
-        can be trusted.
-      </div>
-    </div>
-
-    <div class="known">
-      <div class="known-title">Flatpacks — FLATPACK_IF Interface ID Not Confirmed</div>
-      <div class="known-desc">
-        The interface that opens when selecting items on the Portable Workbench is currently
-        set to <code>1371</code> (same as the Woodworking Bench). Needs confirming via packet
-        capture with the Portable Workbench open in-game.
-      </div>
-    </div>
-
-    <div class="known">
-      <div class="known-title">Flatpacks — Bank Chest Name Not Confirmed</div>
-      <div class="known-desc">
-        The bank proximity scan uses <code>SceneObjectQuery.name("Bank chest")</code>.
-        The exact in-game name needs confirming — if it differs (e.g. capitalisation or
-        spacing), the scan will silently fall back to the hardcoded Fort Forinthry coords
-        every batch.
+        Fort Forinthry is confirmed working. GE path needs a live test and packet capture before it can be trusted.
       </div>
     </div>
 
   </div>
-
 
   <div class="footer">
     <span class="pulse"></span>
