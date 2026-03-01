@@ -68,13 +68,13 @@
   <div class="header">
     <div class="game-title">Fort Forinthry Crafter</div>
     <div class="sub">BotWithUs Script — Development Log</div>
-    <div class="date-badge">Session — February 27–28, 2026 &nbsp;·&nbsp; Updated</div>
+    <div class="date-badge">Session — February 27 – March 1, 2026 &nbsp;·&nbsp; Updated</div>
   </div>
 
   <div class="stats-bar">
-    <div class="stat"><div class="stat-label">Features</div><div class="stat-value">15</div></div>
-    <div class="stat"><div class="stat-label">Fixes</div><div class="stat-value" style="color:var(--green);">16</div></div>
-    <div class="stat"><div class="stat-label">Improvements</div><div class="stat-value">13</div></div>
+    <div class="stat"><div class="stat-label">Features</div><div class="stat-value">18</div></div>
+    <div class="stat"><div class="stat-label">Fixes</div><div class="stat-value" style="color:var(--green);">24</div></div>
+    <div class="stat"><div class="stat-label">Improvements</div><div class="stat-value">15</div></div>
     <div class="stat"><div class="stat-label">Known Issues</div><div class="stat-value" style="color:var(--red);">1</div></div>
     <div class="stat"><div class="stat-label">API Version</div><div class="stat-value" style="font-size:15px; margin-top:4px;">1.0.8</div></div>
     <div class="stat"><div class="stat-label">Status</div><div class="stat-value" style="font-size:13px; color:var(--green); margin-top:6px;"><span class="pulse"></span>IN DEV</div></div>
@@ -172,6 +172,24 @@
       <div class="entry-tag">Feature</div>
       <div class="entry-title">Session Log — Auto-saved on Finish and Stop</div>
       <div class="entry-desc">Writes plain-text log to <code>%USERPROFILE%\BotWithUs\logs\FortForinthryCrafter_YYYY-MM-DD_HH-mm-ss.txt</code>. Includes runtime, mode, batch counts, XP gained, flatpacks stats when applicable. Saved on <code>DONE</code> and again in <code>onDeactivation()</code> as a safety fallback.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Behavioral Event Log — Pattern Analysis File</div>
+      <div class="entry-desc">On every stop a compact <code>.evtlog</code> file is written alongside the session log with the same timestamp. Format: <code>[HH:MM:SS offset]  EVENT  detail</code>. Captures <code>BREAK_SCHEDULED</code>, <code>BREAK_START</code> (type / duration / play-time before), <code>BREAK_END</code>, <code>CAMERA_ROTATE</code> (direction / taps / next interval), <code>ZOOM</code>, <code>GEAR_CHECK</code>, <code>GEAR_DONE</code>, <code>GEAR_SKIP</code> with reason. Resets fresh on every Start press. Purpose: scan raw timing data across sessions for detectable patterns.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Break System — Independent Micro / Long / Lobby Exit Controls</div>
+      <div class="entry-desc">Three fully independent checkboxes. <strong>Micro breaks</strong> (4–7 min). <strong>Long breaks</strong> (7–28 min, 5% chance after 35 min). <strong>Exit to lobby on long break</strong> — sends lobby exit sequence then <code>DoAction(COMPONENT,1,-1,59375697)</code> to log back in. Any combination works: micro off + long on fires only long breaks; lobby exit alone implicitly enables long breaks. Camera / zoom / gear checks always run regardless. Long break unlock lowered from 60 min to 35 min.</div>
+    </div>
+
+    <div class="entry feature">
+      <div class="entry-tag">Feature</div>
+      <div class="entry-title">Pipeline Mode — Logs to Refined (No Frames)</div>
+      <div class="entry-desc">New <code>LOGS_TO_REFINED</code> mode stops after producing Refined Planks and returns to bank — does not proceed to the Woodworking Bench. Replaces the duplicate <code>LOGS_FULL_PIPELINE</code> entry which was behaviorally identical to <code>LOGS_TO_REFINED_FRAMES</code>. <code>PLANKS_TO_REFINED</code> state now calls <code>resolveNextState()</code> instead of hardcoding <code>State.REFINED_TO_FRAMES</code> so this mode can stop correctly mid-pipeline.</div>
     </div>
 
   </div>
@@ -276,6 +294,54 @@
       <div class="entry-desc">Camera rotation used <code>java.awt.Robot.keyPress()</code> — OS-level synthetic input that bypasses the game's input layer and is a known ban signal. Replaced with <code>KeyboardInput.pressKey()</code> on A/D. All <code>java.awt</code> references removed.</div>
     </div>
 
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Fixed 300 ms Idle Pulse</div>
+      <div class="entry-desc">When the script was loaded but not running, every loop tick fired an exact <code>Execution.delay(300)</code>. Produces a metronomic heartbeat signature. Replaced with <code>humanDelay(200, 500)</code> for a jittered idle pulse.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Break Duration Floor Spike at 4 Minutes</div>
+      <div class="entry-desc"><code>Math.max(4 * 60_000, humanDelay(4 * 60_000, 7 * 60_000))</code> was clamping any roll below the min to exactly 4 minutes, creating a detectable spike at the distribution floor. The <code>Math.max</code> wrapper removed — <code>humanDelay</code> already cannot go below its minimum.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Bot Detection — Hardcoded 3 s Logout Delay</div>
+      <div class="entry-desc">The exit-to-lobby sequence ended with a bare <code>Execution.delay(3_000)</code>. Replaced with <code>humanDelay(2_000, 4_500)</code>.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Gear Check — Always Skipping Due to Wrong Interface Guard</div>
+      <div class="entry-desc"><code>tickGearCheck()</code> opened with <code>if (!Interfaces.isOpen(1477)) return</code>. Interface 1477 is the sidebar container — it is always rendered and never registers as open/closed via <code>isOpen()</code>. Every call silently bailed before doing anything. Guard removed entirely.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Gear Check — Equipment Tab Never Found</div>
+      <div class="entry-desc"><code>ComponentQuery(1477).option("Equipment")</code> never matched because the RS3 tab tooltip is <code>"Worn Equipment"</code>, not <code>"Equipment"</code>. Fixed to <code>option("Worn Equipment")</code>.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Gear Check — Skills Panel Not Open When Hover Fires</div>
+      <div class="entry-desc"><code>hoverConstructionSkill()</code> checked <code>Interfaces.isOpen(SKILLS_IF)</code> but the skills panel takes a server tick to open after the tab click. The check always failed. Fixed by adding <code>Execution.delayUntil(2_000, isOpen(SKILLS_IF))</code> in <code>tickGearCheck()</code> after the Skills tab click, before delegating to the hover method. The redundant guard inside <code>hoverConstructionSkill()</code> removed.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Flatpacks — tickCamera Missing from Main Tick</div>
+      <div class="entry-desc"><code>tickCamera()</code> was missing from <code>FlatpacksScript.tick()</code> — it only fired inside <code>waitForProgress</code>. On fast batches the camera could go completely still between crafts. Added alongside <code>tickZoom()</code> at the top of every tick.</div>
+    </div>
+
+    <div class="entry fix">
+      <div class="entry-tag">Fix</div>
+      <div class="entry-title">Mid-Craft AFK Pause Removed</div>
+      <div class="entry-desc">The <code>randomAfk</code> feature introduced a 4–12 s freeze during the crafting animation which lasts only 6–8 s total. A pause mid-animation has no plausible human explanation and is more suspicious than nothing. Feature removed. <code>waitForProgress(timeoutMs, allowAfk)</code> simplified to <code>waitForProgress(timeoutMs)</code>. Checkbox removed from UI.</div>
+    </div>
+
   </div>
 
   <!-- IMPROVEMENTS -->
@@ -308,20 +374,14 @@
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">Mid-Craft AFK — Session-Age Scaled Probability</div>
-      <div class="entry-desc">Mid-craft micro-pauses scale from 3% at session start to 7% after 2 hours. Only fires at the Woodworking Bench — disabled at the Sawmill.</div>
-    </div>
-
-    <div class="entry improve">
-      <div class="entry-tag">Improve</div>
       <div class="entry-title">Between-Batch Pause — 8% Longer Glance-Away</div>
       <div class="entry-desc">After each completed batch, 8% chance of a 2–4 s pause instead of the normal 400–900 ms settle. Applied to both frames and flatpacks pipelines.</div>
     </div>
 
     <div class="entry improve">
       <div class="entry-tag">Improve</div>
-      <div class="entry-title">Long Breaks Gated Behind 1 Hour Session Time</div>
-      <div class="entry-desc">Fat-tail 7–28 min break only activates after 1 hour of total session time. Under 1 hour all breaks are 4–7 min.</div>
+      <div class="entry-title">Long Breaks Gated Behind Session Time Threshold</div>
+      <div class="entry-desc">Fat-tail 7–28 min break only activates after 35 minutes of total session time (originally 1 hour, lowered March 1). Under the threshold all breaks are normal 4–7 min duration.</div>
     </div>
 
     <div class="entry improve">
@@ -360,6 +420,24 @@
       <div class="entry-desc">Exit-to-lobby sequence extracted to named constants: <code>LOGOUT_MENU_P2</code>, <code>LOGOUT_MENU_P3</code>, <code>EXIT_LOBBY_P3</code>.</div>
     </div>
 
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Long Break Unlock — Threshold Lowered to 35 Minutes</div>
+      <div class="entry-desc">Fat-tail 7–28 min breaks previously required 60 min of total session time before the 5% roll was eligible. Lowered to 35 min — more realistic for a player who has been grinding for a while and steps away properly.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Break System — Long Breaks Fully Independent of Micro Breaks</div>
+      <div class="entry-desc">Previously disabling micro breaks blocked all breaks including long ones. Rewritten so each type is independently controlled. When micro is off and long is on, the 5% roll still fires; if it misses, <code>scheduleNextBreak()</code> is called silently and no normal break is taken. The break counter advances regardless.</div>
+    </div>
+
+    <div class="entry improve">
+      <div class="entry-tag">Improve</div>
+      <div class="entry-title">Pipeline Dropdown — Duplicate Entry Replaced with Distinct Mode</div>
+      <div class="entry-desc"><code>LOGS_FULL_PIPELINE</code> was identical in behavior to <code>LOGS_TO_REFINED_FRAMES</code>, producing a duplicate entry in the UI dropdown that rendered as <code>?</code> (Unicode arrow in the original label). Replaced with the genuinely distinct <code>LOGS_TO_REFINED</code> mode. UI hint text updated to describe each mode's actual route and preset requirement.</div>
+    </div>
+
   </div>
 
   <!-- KNOWN ISSUES -->
@@ -379,7 +457,7 @@
 
   <div class="footer">
     <span class="pulse"></span>
-    FORT FORINTHRY CRAFTER &nbsp;·&nbsp; DEV SESSION 2026-02-27/28 &nbsp;·&nbsp; BOTWITHUS API 1.0.8
+    FORT FORINTHRY CRAFTER &nbsp;·&nbsp; DEV SESSION 2026-02-27/03-01 &nbsp;·&nbsp; BOTWITHUS API 1.0.8
   </div>
 
 </div>
